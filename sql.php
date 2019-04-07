@@ -23,6 +23,10 @@ $password='ftccgroup1';
 
 $conn = new PDO("sqlsrv:Server=$hostname;Database=$dbname", $username, $password);
 
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+
 //$conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION ); 
 //$conn->setAttribute( PDO::SQLSRV_ATTR_QUERY_TIMEOUT, 1 ); 
 
