@@ -1,9 +1,14 @@
 <?php
 
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2019
+ *   Alondra Dorantes <dorantesa2016@forsythtech.edu>
+ *   Dana Caldwell <caldwelld2608@forsythtech.edu>
+ *   Dung Duong <duongd1067@forsythtech.edu>
+ *   Marshall Casey <caseym1325@students.forsythtech.edu>
+ *   William West <westw2305@forsythtech.edu>
+ * Created for the FTCC course CSC-289-900-2019SP.
+ * This program can be freely copied and/or distributed.
  */
 
 $host = 'SQL5008.site4now.net';
@@ -18,6 +23,17 @@ $dsn = 'sqlsrv:server='. $host .'; Database='. $dbname;
 // Create PDO instance
 $connection = new PDO($dsn, $user, $password);
 
-# PRDO QUERY
+// Set default fetch action for $connection
+$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 
-$stmt = $pdo->query();
+# PRDO QUERY
+$stmt = $connection->query('SELECT * FROM Inventory');
+
+//while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+//    echo $row['Description'] . '<br>';
+//}
+
+//while($row = $stmt->fetch(PDO::FETCH_OBJ)){
+while($row = $stmt->fetch()){
+    echo $row->Description . '<br>';
+}
