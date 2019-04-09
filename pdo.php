@@ -27,13 +27,54 @@ $connection = new PDO($dsn, $user, $password);
 $connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 
 # PRDO QUERY
-$stmt = $connection->query('SELECT * FROM Inventory');
+//$stmt = $connection->query('SELECT * FROM Inventory');
 
 //while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 //    echo $row['Description'] . '<br>';
 //}
 
 //while($row = $stmt->fetch(PDO::FETCH_OBJ)){
-while($row = $stmt->fetch()){
-    echo $row->Description . '<br>';
-}
+//while($row = $stmt->fetch()){
+//    echo $row->Description . '<br>';
+//}
+
+# PREPARED STATEMENTS (prepare & execute)
+
+//UNSAFE
+//$sql = "SELECT * FROM Inventory WHERE description = '$description'";
+
+// FETCH MUTIPLE POSTS
+
+// User Input
+$description = 'Spock';
+$quantity = 1;
+$id = '1';
+
+// Positional Params
+//$sql = 'SELECT * FROM Inventory WHERE description = ?';
+//$stmt = $connection->prepare($sql);
+//$stmt->execute([$description]);
+//$items = $stmt->fetchAll();
+
+// Named Params
+//$sql = 'SELECT * FROM Inventory WHERE description = :description AND quantity = :quantity';
+//$sql = 'SELECT * FROM Inventory WHERE description = :description';
+//$stmt = $connection->prepare($sql);
+//$stmt->execute(['description' => $description, 'quantity' => $quantity]);
+//$stmt->execute(['description' => $description]);
+//$items = $stmt->fetchAll();
+
+//var_dump($items);
+//echo "<br>";
+//
+//foreach($items as $item){
+//    echo $item->Description . $item->Quantity . $item->Price . "<br>";
+//}
+
+// FETCH SINGLE POST
+$sql = 'SELECT * FROM Inventory WHERE id = :id';
+$stmt = $connection->prepare($sql);
+$stmt->execute(['id' => $id]);
+$item = $stmt->fetch();
+
+echo $item->Description . "<br>";
