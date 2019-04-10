@@ -28,7 +28,7 @@ $connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 
 # PRDO QUERY
 //$stmt = $connection->query('SELECT * FROM Inventory');
-
+// 
 //while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 //    echo $row['Description'] . '<br>';
 //}
@@ -72,9 +72,48 @@ $id = '1';
 //}
 
 // FETCH SINGLE POST
-$sql = 'SELECT * FROM Inventory WHERE id = :id';
-$stmt = $connection->prepare($sql);
-$stmt->execute(['id' => $id]);
-$item = $stmt->fetch();
+//$sql = 'SELECT * FROM Inventory WHERE id = :id';
+//$stmt = $connection->prepare($sql);
+//$stmt->execute(['id' => $id]);
+//$item = $stmt->fetch();
+//
+//echo $item->Description . "<br>";
 
-echo $item->Description . "<br>";
+# GET ROW COUNT [[[[ THIS IS JUST NOT WORKING !!! ]]]]
+//$stmt = $connection->prepare('SELECT * FROM Inventory WHERE description = ?');
+// do our execute
+//$stmt->execute([$description]);
+//var_dump($stmt);
+//$postCount = $stmt->rowCount();
+//
+
+
+//#INSERT DATA
+//
+//$newID = 6;
+//$newDescription = "New Stuff";
+//$newQuantity = 1;
+//$newPrice = 4.99;
+//
+//$sql = 'INSERT INTO Inventory(id, description, quantity, price) VALUES (:id, :description, :quantity, :price)';
+//$stmt = $connection->prepare($sql);
+//$stmt->execute(['id' => $newID, 'description' => $newDescription, 'quantity' => $newQuantity, 'price' => $newPrice]);
+//echo 'Post Added';
+
+
+# UPDATE DATA
+//$newID = 6;
+//$newQuantity = 5;
+//
+//$sql = 'UPDATE Inventory SET quantity = :quantity WHERE id = :id';
+//$stmt = $connection->prepare($sql);
+//$stmt->execute(['quantity' => $newQuantity, 'id' => $newID]);
+//echo 'Post Changed';
+
+# DELETE DATA
+$newID = 6;
+
+$sql = 'DELETE FROM Inventory WHERE id = :id';
+$stmt = $connection->prepare($sql);
+$stmt->execute(['id' => $newID]);
+echo 'Post Deleted';
