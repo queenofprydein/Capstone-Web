@@ -85,7 +85,7 @@ $id = '1';
 //$stmt->execute([$description]);
 //var_dump($stmt);
 //$postCount = $stmt->rowCount();
-//
+//echo $postCount;
 
 
 //#INSERT DATA
@@ -111,9 +111,25 @@ $id = '1';
 //echo 'Post Changed';
 
 # DELETE DATA
-$newID = 6;
+//$newID = 6;
+//
+//$sql = 'DELETE FROM Inventory WHERE id = :id';
+//$stmt = $connection->prepare($sql);
+//$stmt->execute(['id' => $newID]);
+//echo 'Post Deleted';
 
-$sql = 'DELETE FROM Inventory WHERE id = :id';
+# SEARCH DATA
+$search = "%Spock%";
+$sql = "SELECT * FROM Inventory WHERE description LIKE ?";
+// do the prepare (make the statement ready to be completed)
 $stmt = $connection->prepare($sql);
-$stmt->execute(['id' => $newID]);
-echo 'Post Deleted';
+// now we want to execute (positional parameters because it is just a '?' in the SQL statement)
+$stmt->execute([$search]);
+$items = $stmt->fetchAll();  // This is where the default object type will be used
+
+foreach($items as $item){
+    echo $item->Description . "<br>";
+}
+
+
+
