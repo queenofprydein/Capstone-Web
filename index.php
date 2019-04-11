@@ -12,6 +12,7 @@ and open the template in the editor.
     <body>
         <?php
         // put your code here
+        echo 'This is a title';
         echo '<a href="config.php">config.php</a><br>';
         echo '<a href="database.php">database.php</a><br>';
         echo '<a href="db2.php">db2.php</a><br>';
