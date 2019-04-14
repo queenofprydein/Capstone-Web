@@ -12,7 +12,7 @@ This program can be freely copied and/or distributed.
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SM</title>
+        <title>SM - Landing Page</title>
     </head>
     <body>
         <?php
@@ -24,8 +24,8 @@ This program can be freely copied and/or distributed.
           <input type="submit" name="button_change_info" value="Change Personal Information">
         </form>
         <br>
-        <form action="change_schedule.html">
-          <input type="submit" name="button_change_sched" value="Change Availability">
+        <form action="select_shift.php">
+          <input type="submit" name="button_pick_shifts" value="Pick Shifts">
         </form>
         <br>
         <form action="logout.html">
