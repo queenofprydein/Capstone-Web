@@ -19,7 +19,47 @@ This program can be freely copied and/or distributed.
             include "db_connect.php";
         ?>
       <center>
-        ]SCHEDULE GOES HERE[<BR>
+        
+          
+          <?php
+        $id = 3;
+
+
+
+
+
+
+
+
+
+
+        $sql_volunteer = 'SELECT * FROM Volunteer';
+        $stmt_volunteer = $connection->query($sql_volunteer);
+
+        echo '<form action="#" method="post">';
+        echo '<select name="selected_volunteer">';
+        while ($row = $stmt_volunteer->fetch()) {
+            //Volunteer_ID
+            //Last_Name
+            //First_Name
+            //Middle_Name
+            //Phone
+            //Email
+            //Preferred_Method_Of_Contact
+            //BirthDate
+            //Gender
+            //Emergency_Contact_Phone
+            //Emergency_Contact_Name
+            //Community_Service
+            echo '<option value="' . $row->Volunteer_ID . '">' . $row->First_Name . '</option>';
+        }
+        echo '</select>';
+        echo '<br>';
+        ?>  
+          
+          
+          
+          <BR>
         <form action="change_information.php">
           <input type="submit" name="button_change_info" value="Change Personal Information">
         </form>
