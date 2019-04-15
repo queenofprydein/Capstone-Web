@@ -24,8 +24,8 @@ This program can be freely copied and/or distributed.
           <input type="submit" name="button_change_info" value="Change Personal Information">
         </form>
         <br>
-        <form action="select_shift.php">
-          <input type="submit" name="button_pick_shifts" value="Pick Shifts">
+        <form action="add_shift.php">
+          <input type="submit" name="button_add_shifts" value="Add Shifts">
         </form>
         <br>
         <form action="logout.html">
