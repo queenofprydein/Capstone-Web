@@ -24,20 +24,9 @@ This program can be freely copied and/or distributed.
         ?>
         <?php
         $id = 3;
-
-
-
-
-
-
-
-
-
-
         $sql_volunteer = 'SELECT * FROM Volunteer';
         $stmt_volunteer = $connection->query($sql_volunteer);
 
-        
         echo '<form action="#" method="post">';
         echo '<select name="selected_volunteer">';
         while ($row = $stmt_volunteer->fetch()) {
@@ -110,7 +99,13 @@ This program can be freely copied and/or distributed.
         </form>
 
         <?php
-        if (isset($_POST['button_add'])) {//to run PHP script on submit
+        
+        //filter_input(INPUT_POST, 'button_add') instead of $_POST['button_add']
+        //filter_input_array(INPUT_POST) instead of $_POST
+        
+        
+        //if (isset($_POST['button_add'])) {//to run PHP script on submit
+        if (null !== filter_input(INPUT_POST, 'button_add')) {//to run PHP script on submit
             $selected_vol = $_POST['selected_volunteer'];  // Storing Selected Value In Variable
             //echo "You have selected :" .$selected_vol . "<br>";  // Displaying Selected Value
             if (!empty($_POST['shift_list'])) {
