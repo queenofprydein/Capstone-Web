@@ -9,12 +9,13 @@ Copyright (C) 2019
 Created for the FTCC course CSC-289-900-2019SP.
 This program can be freely copied and/or distributed.
 -->
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>SM - Change Information</title>
     </head>
     <body>
+    <center>
         <?php
         include "db_connect.php";
         ?>

@@ -15,28 +15,15 @@ This program can be freely copied and/or distributed.
         <title>SM - Landing Page</title>
     </head>
     <body>
+    <center>
         <?php
-            include "db_connect.php";
-        ?>
-      <center>
-        
-          
-          <?php
+        include "db_connect.php";
+
         $id = 3;
-
-
-
-
-
-
-
-
-
-
         $sql_volunteer = 'SELECT * FROM Volunteer';
         $stmt_volunteer = $connection->query($sql_volunteer);
 
-        echo '<form action="#" method="post">';
+        //echo '<form action="#" method="post">';
         echo '<select name="selected_volunteer">';
         while ($row = $stmt_volunteer->fetch()) {
             //Volunteer_ID
@@ -54,23 +41,28 @@ This program can be freely copied and/or distributed.
             echo '<option value="' . $row->Volunteer_ID . '">' . $row->First_Name . '</option>';
         }
         echo '</select>';
+        //echo '</form>';
         echo '<br>';
         ?>  
-          
-          
-          
-          <BR>
+
+
+
+
+
+        <br>
+
         <form action="change_information.php">
-          <input type="submit" name="button_change_info" value="Change Personal Information">
+            <input type="submit" name="button_change_info" value="Change Personal Information">
         </form>
         <br>
         <form action="add_shift.php">
-          <input type="submit" name="button_add_shifts" value="Add Shifts">
+            <input type="submit" name="button_add_shifts" value="Add Shifts">
         </form>
         <br>
         <form action="logout.html">
-          <input type="submit" name="button_logout" value="Logout">
+            <input type="submit" name="button_logout" value="Logout">
         </form>
-      </center>
+        <br>
+    </center>
     </body>
 </html>

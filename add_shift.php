@@ -110,7 +110,7 @@ This program can be freely copied and/or distributed.
             //echo "You have selected :" .$selected_vol . "<br>";  // Displaying Selected Value
             if (null !== filter_input(INPUT_POST, 'shift_list')) {
                 // Loop to store and display values of individual checked checkbox.
-                foreach (filter_input(INPUT_POST, 'shift_list') as $selected_shift) {
+                foreach ($_POST['shift_list'] as $selected_shift) {
                     //echo $selected_shft . "</br>";
                     $sql_insert = 'INSERT INTO Volunteer_Schedule (Shift_ID, Volunteer_ID) VALUES ('. $selected_shift. ',  '. $selected_vol .')';
                     //$sql_insert = 'DELETE FROM Volunteer_Schedule WHERE Volunteer_ID = 3';
