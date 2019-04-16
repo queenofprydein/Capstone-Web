@@ -11,7 +11,7 @@ $user = 'DB_A47087_smgroup_admin';
 $password = 'ftccgroup1';
 $dbname = 'DB_A47087_smgroup';
 
-// Set DSN
+// Set DSN (Data Source Name)
 $dsn = 'sqlsrv:server='. $host .'; Database='. $dbname; 
 
 // Create PDO instance
