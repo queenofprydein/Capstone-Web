@@ -33,13 +33,13 @@ try {
             
             echo $_POST["username"];
             echo $_POST["password"];
-//            $statement->execute(['username' => $username, 'password' => $password]);
-            $statement->execute(
-                array(
-                    'username' => $_POST["username"],
-                    'password' => $_POST["password"]
-                )
-            );
+            $statement->execute(['username' => $_POST["username"], 'password' => $_POST["password"]]);
+//            $statement->execute(
+//                array(
+//                    'username' => $_POST["username"],
+//                    'password' => $_POST["password"]
+//                )
+//            );
             echo "<pre>";
             var_dump($statement);
             echo "</pre>";
