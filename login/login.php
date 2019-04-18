@@ -24,16 +24,23 @@ try {
     $connect = new PDO("sqlsrv:server=$host; database=$database", $db_username, $db_password); 
     $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
+    //$connect->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+    
     if(isset($_POST["login"])){
         if(empty($_POST["username"]) || empty($_POST["password"])){
             $message = '<label>All fields are required</label>';
         } else {
-            $query = "SELECT * FROM users WHERE username = :username AND password = :password";
+            $query = 'SELECT * FROM users WHERE username = :username AND password = :password';
             $statement = $connect->prepare($query);
             
             echo $_POST["username"];
             echo $_POST["password"];
-            $statement->execute(['username' => $_POST["username"], 'password' => $_POST["password"]]);
+            //$statement->execute(['username' => $_POST["username"], 'password' => $_POST["password"]]);
+            $username = $_POST["username"];
+            $password = $_POST["password"];
+            
+            $statement->execute(['username' => $username, 'password' => $password]);
+            
 //            $statement->execute(
 //                array(
 //                    'username' => $_POST["username"],
@@ -41,7 +48,12 @@ try {
 //                )
 //            );
             echo "<pre>";
-            var_dump($statement);
+            //var_dump($statement);
+            
+
+            $items = $statement->fetchAll();
+            //var_dump($items);
+            
             echo "</pre>";
             $count = $statement->rowCount();
             echo "Rows:" . $count;
@@ -65,9 +77,9 @@ try {
 <html>
     <head>
         <title>Login Test</title>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </head>
     <body>
         <br>

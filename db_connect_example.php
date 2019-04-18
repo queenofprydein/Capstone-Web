@@ -41,8 +41,8 @@ $connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 // FETCH MUTIPLE POSTS
 
 // User Input
-//$description = 'Spock';
-//$quantity = 1;
+$description = 'Spock';
+$quantity = 1;
 //$id = '1';
 
 // Positional Params
@@ -52,14 +52,20 @@ $connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 //$items = $stmt->fetchAll();
 
 // Named Params
-//$sql = 'SELECT * FROM Inventory WHERE description = :description AND quantity = :quantity';
+$sql = 'SELECT * FROM Inventory WHERE description = :description AND quantity = :quantity';
 //$sql = 'SELECT * FROM Inventory WHERE description = :description';
-//$stmt = $connection->prepare($sql);
-//$stmt->execute(['description' => $description, 'quantity' => $quantity]);
+$stmt = $connection->prepare($sql);
+$stmt->execute(['description' => $description, 'quantity' => $quantity]);
 //$stmt->execute(['description' => $description]);
-//$items = $stmt->fetchAll();
 
-//var_dump($items);
+            echo "<pre>";
+            var_dump($stmt);
+
+            
+            $items = $stmt->fetchAll();
+
+            var_dump($items);
+            echo "</pre>";
 //echo "<br>";
 //
 //foreach($items as $item){
