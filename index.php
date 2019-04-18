@@ -9,6 +9,67 @@ Copyright (C) 2019
 Created for the FTCC course CSC-289-900-2019SP.
 This program can be freely copied and/or distributed.
 -->
+
+<?php
+session_start();
+//include "db_connect.php";
+$host = "SQL5008.site4now.net";
+$db_username = "DB_A47087_smgroup_admin";
+$db_password = "ftccgroup1";
+$database = "DB_A47087_smgroup";
+$message = "";
+
+
+
+try {
+    // Set DSN (Data Source Name)
+//    $dsn = 'sqlsrv:server='. $host .'; Database='. $dbname; 
+
+    // Create PDO instance
+//    $connection = new PDO($dsn, $user, $password);
+    
+    //$connect = new PDO("sqlsrv:host=$host; dbname=$database", $username, $password); 
+    $connect = new PDO("sqlsrv:server=$host; database=$database", $db_username, $db_password); 
+    $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    if(isset($_POST["login"])){
+        if(empty($_POST["username"]) || empty($_POST["password"])){
+            $message = '<label>All fields are required</label>';
+        } else {
+            $query = 'SELECT * FROM users WHERE username = :username AND password = :password';
+            $statement = $connect->prepare($query);
+
+            echo $_POST["username"];
+            echo $_POST["password"];
+            //$statement->execute(['username' => $_POST["username"], 'password' => $_POST["password"]]);
+            $username = $_POST["username"];
+            $password = $_POST["password"];
+
+            $statement->execute(['username' => $username, 'password' => $password]);
+
+            echo "<pre>";
+            //var_dump($statement);
+
+
+            $items = $statement->fetchAll();
+            //var_dump($items);
+
+            echo "</pre>";
+            $count = $statement->rowCount();
+            echo "Rows:" . $count;
+            if($count > 0){
+                echo "got here";
+                $_SESSION["username"] = $_POST["username"];
+                header("location:landing_page.php");
+            } else {
+                $message = '<label>Wrong data</label>';
+            }
+        }
+    }
+} catch (PDOException $error) {
+    $message = $error->getMessage();
+}
+?>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -18,28 +79,40 @@ This program can be freely copied and/or distributed.
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </head>
     <body>
+
         <!--<div class="container" style="width:500px;">-->
-        <div class="mx-auto" style="width: 400px;" align="center">
+        <div class="mx-auto" style="width: 400px;">
             <img src="images/SamaritanLogohires.jpg" class="img-fluid" alt="Samaritan Ministries Logo">
             <br>
-            <a href="login/login.php">Login Test Page</a>
             <br>
-            <a href="landing_page.php">Landing Page</a>
-            <br>
-            <form action="landing_page.php" method="post">
-                <!-- 'name' is what is passed along. -->
-                Username:<input type="text" name="user_name" class="form-control"><br>
-                Password:<input type="text" name="their_password" class="form-control"><br>
-                <input type="submit" name="the_button"  class="btn btn-info" value="Login">
+            <form method="post">
+                <label>Username</label>
+                <input type="text" name="username" class="form-control" />
+                <br>
+                
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" />
+                <br>
+                <div  align="right">
+                    <input type="submit" name="login" class="btn btn-info" value="Login" />
+                </div>
+                
             </form>
-            <br>
-            <form action="create_account.html">
-                <input type="submit" name="create_button" class="btn btn-success" value="Create Account">
-            </form>
-            <br>
-            <form action="reset_password.html">
-                <input type="submit" name="forgot_button" class="btn btn-warning" value="Forgot Password">
-            </form>
+            <br><br>
+            <div  align="center">
+                <form action="create_account.html">
+                    <input type="submit" name="create_button" class="btn btn-success" value="Create Account">
+                </form>
+                <br>
+                <form action="reset_password.html">
+                    <input type="submit" name="forgot_button" class="btn btn-warning" value="Forgot Password">
+                </form>
+            </div>
+            <?php
+            if (isset($message)) {
+                echo '<label class="text-danger">DWR: ' . $message . '</label>';
+            }
+            ?>
         </div>
     </body>
 </html>
