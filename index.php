@@ -104,8 +104,8 @@ try {
                     <input type="submit" name="create_button" class="btn btn-success" value="Create Account">
                 </form>
                 <br>
-                <form action="reset_password.html">
-                    <input type="submit" name="forgot_button" class="btn btn-warning" value="Forgot Password">
+                <form action="create_account.php">
+                    <input type="submit" name="forgot_button" class="btn btn-warning" value="PHP Create Account">
                 </form>
             </div>
             <?php
