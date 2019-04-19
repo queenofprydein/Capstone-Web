@@ -16,30 +16,78 @@ This program can be freely copied and/or distributed.
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <style>
+            div.ex1 {
+              width:500px;
+              margin: auto;
+              border: 3px solid #73AD21;
+            }
+
+            div.ex2 {
+              max-width:500px;
+              margin: auto;
+            }
+        </style>
     </head>
     <body>
-        <div class="mx-auto" align="center">
-            <a href="index.html">Make Account</a>
-
-            <form action="set_it_up.html">
-                <input type="submit" name="create_button" class="btn btn-success" value="Create Account">
-            </form>
+        <div class="ex2">
+            <img src="images/SamaritanLogohires.jpg" class="img-fluid" alt="Samaritan Ministries Logo">
             <br>
-            <form action="landing_page.html">
-                <input type="submit" name="button_cancel" class="btn btn-warning" value="Cancel">
+            <br>
+            <form method="post">
+                <label>Username</label>
+                <input type="text" name="username" class="form-control" />
+                <br>
+                
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" />
+                <br>
+                
+                <label>Repeat Password</label>
+                <input type="password" name="repeat_password" class="form-control" />
+                <br>
+                <div  align="right">
+                    <input type="submit" name="button_create_account" class="btn btn-info" value="Create Account" />
+                </div>
             </form>
-            <?php 
-  
-            // PHP code to illustrate the working  
-            // of md5(), sha1() and hash() 
+            <form action="index.php" >
+                <div align="center">
+                    <input type="submit" name="button_cancel" class="btn btn-warning" value="Cancel">
+                </div>
+            </form>
 
-            $str = 'Password'; 
-            $salt = 'Username20Jun96'; 
-            echo sprintf("The md5 hashed password of %s is: %s\n", $str, md5($str.$salt)); 
-            echo sprintf("The sha1 hashed password of %s is: %s\n", $str, sha1($str.$salt)); 
-            echo sprintf("The gost hashed password of %s is: %s\n", $str, hash('gost', $str.$salt)); 
+            <?php
+            include 'db_function.php';
 
-            ?> 
+            $newUser_Login_Name = "Fred";
+            $newUser_Password = "Fred";
+            $newUser_Hash = password_hash($newUser_Password, PASSWORD_DEFAULT);
+
+            $sql =  "INSERT INTO Volunteer_Login (";
+            $sql .= "Login_Name, ";
+            $sql .= "Hash";
+            $sql .= ") VALUES (";
+            $sql .= "'". $newUser_Login_Name ."', ";
+            $sql .= "'". $newUser_Hash ."'";
+            $sql .= ")";
+
+            //echo "<br>Hash SQL<br>";
+            //echo $sql;
+
+
+            //$newAccount = connection();
+
+
+            //SQL Query
+            //$results = $newAccount->query($sql);
+            //End Query
+
+            //echo "<br>Hash SQL Results<br>";
+            //echo "<pre>";
+            //var_dump($results);
+            //echo "</pre>";
+
+            ?>
         </div>
     </body>
 </html>

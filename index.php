@@ -60,6 +60,7 @@ try {
             if($count > 0){
                 echo "got here";
                 $_SESSION["username"] = $_POST["username"];
+                $_SESSION["userdata"] = TRUE;
                 header("location:landing_page.php");
             } else {
                 $message = '<label>Wrong data</label>';

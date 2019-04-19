@@ -8,7 +8,8 @@
 
 session_start();
 
-if(isset($_SESSION["username"])){
+if(isset($_SESSION["username"]) || $_SESSION("userdata")){
+//if(isset($_SESSION["username"])){
     echo'<h3>Login Success, Welcome - '.$_SESSION["username"].'</h3>';
     //echo'<br><br><a href="logout.php">Logout</a>';
 } else {
@@ -34,9 +35,20 @@ This program can be freely copied and/or distributed.
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <style>
+            div.ex1 {
+              width:500px;
+              margin: auto;
+              border: 3px solid #73AD21;
+            }
+
+            div.ex2 {
+              max-width:500px;
+              margin: auto;
+            }
+        </style>
     </head>
     <body>
-    <center>
         <?php
         include "db_connect.php";
         
@@ -67,9 +79,7 @@ This program can be freely copied and/or distributed.
         echo '<br>';
         ?>  
         
-        <form action="change.php" class="btn btn-info">
-            <input type="submit" name="button_logout" value="Change User">
-        </form>
+
         
         
         
@@ -87,25 +97,27 @@ This program can be freely copied and/or distributed.
             echo $row['Shift_ID'].', '.$row['Volunteer_ID'].'<br>';
         }
         ?>
+        <div class="ex2">
+            <form action="change.php" class="btn btn-info">
+                <input type="submit" name="button_logout" value="Change User">
+            </form>
 
 
 
+            <br>
 
-
-        <br>
-
-        <form action="change_information.php">
-            <input type="submit" name="button_change_info" value="Change Personal Information">
-        </form>
-        <br>
-        <form action="add_shift.php">
-            <input type="submit" name="button_add_shifts" value="Add Shifts">
-        </form>
-        <br>
-        <form action="logout.php">
-            <input type="submit" name="button_logout" value="Logout">
-        </form>
-        <br>
-    </center>
+            <form action="change_information.php">
+                <input type="submit" name="button_change_info" value="Change Personal Information">
+            </form>
+            <br>
+            <form action="add_shift.php">
+                <input type="submit" name="button_add_shifts" value="Add Shifts">
+            </form>
+            <br>
+            <form action="logout.php">
+                <input type="submit" name="button_logout" value="Logout">
+            </form>
+            <br>
+        </div>
     </body>
 </html>
