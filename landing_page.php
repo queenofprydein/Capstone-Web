@@ -31,11 +31,15 @@ This program can be freely copied and/or distributed.
     <head>
         <meta charset="UTF-8">
         <title>SM - Landing Page</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </head>
     <body>
     <center>
         <?php
         include "db_connect.php";
+        
 
         $id = 3;
         $sql_volunteer = 'SELECT * FROM Volunteer';
@@ -62,6 +66,27 @@ This program can be freely copied and/or distributed.
         //echo '</form>';
         echo '<br>';
         ?>  
+        
+        <form action="change.php" class="btn btn-info">
+            <input type="submit" name="button_logout" value="Change User">
+        </form>
+        
+        
+        
+        
+        <?php
+        include 'db_function.php';
+        $db = connection();
+
+        //SQL Query
+        $sql = 'SELECT * FROM Volunteer_Schedule';
+        $results = $db->query($sql);
+        //End Query
+
+        foreach($results as $row){
+            echo $row['Shift_ID'].', '.$row['Volunteer_ID'].'<br>';
+        }
+        ?>
 
 
 
