@@ -27,14 +27,23 @@ session_start();
 //}
 //echo '<br>';
 
-//include "db_connect.php";
-$host = "SQL5008.site4now.net";
-$db_username = "DB_A47087_smgroup_admin";
-$db_password = "ftccgroup1";
-$database = "DB_A47087_smgroup";
+include "db_function.php";
 $message = "";
 
-$_SESSION["userdata"] = FALSE;
+$_SESSION["userdata"] = "FALSE";
+
+
+            $connect = connection();
+
+
+            //SQL Query
+            //$results = $newAccount->query($sql);
+            //End Query
+
+            //echo "<br>Hash SQL Results<br>";
+            //echo "<pre>";
+            //var_dump($results);
+            //echo "</pre>";
 
 try {
     // Set DSN (Data Source Name)
@@ -44,7 +53,7 @@ try {
 //    $connection = new PDO($dsn, $user, $password);
     
     //$connect = new PDO("sqlsrv:host=$host; dbname=$database", $username, $password); 
-    $connect = new PDO("sqlsrv:server=$host; database=$database", $db_username, $db_password); 
+    
     $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     
@@ -68,7 +77,18 @@ try {
                 echo "got here";
                 $_SESSION["username"] = $_POST["username"];
                 // Set userdata to TRUE if user has data
-                $_SESSION["userdata"] = TRUE;
+                $sql_volunteer = "SELECT Volunteer_ID FROM Volunteer_Login WHERE Login_Name = :username";
+                $statement2 = $connect->prepare($sql_volunteer);
+                $statement2->execute(['username' => $_POST["username"]]);
+                $items2 = $statement2->fetchAll();
+                $count2 = $statement2->rowCount();
+                if($count2 > 0){
+                    $_SESSION["userdata"] = "TRUE";
+                } else {
+                    $_SESSION["userdata"] = "FALSE";
+                    //$_SESSION["userdata"] = "TRUE";
+                }
+                //$_SESSION["userdata"] = TRUE;
                 header("location:landing_page.php");
             } else {
                 $message = '<label>Wrong data</label>';

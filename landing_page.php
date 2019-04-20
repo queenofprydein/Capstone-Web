@@ -17,11 +17,11 @@ if(isset($_SESSION["username"])){
     header("location:index.php");
 }
 
-if($_SESSION["userdata"]){
-    echo '<h3>Data flag is set to: ' . $_SESSION["userdata"].'</h3>';
+if($_SESSION["userdata"]=="TRUE"){
+    echo '<h3>Data flag is set to: ' . $_SESSION["userdata"] .'</h3>';
 } else {
     echo '<h1>CHANGE TO gather_information.php LEG OF VALIDATION.</h1>';
-    //header("location:gather_information.php");
+    header("location:gather_information.php");
 }
 
 ?>

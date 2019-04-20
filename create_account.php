@@ -86,6 +86,8 @@ This program can be freely copied and/or distributed.
             //echo "<pre>";
             //var_dump($results);
             //echo "</pre>";
+            
+            // IF SUCCESSFUL NEED TO LOGIN USER
 
             ?>
         </div>

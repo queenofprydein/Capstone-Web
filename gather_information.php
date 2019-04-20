@@ -5,6 +5,7 @@
  * Created for the FTCC course CSC-289-900-2019SP.
  * This program can be freely copied and/or distributed.
  */
+session_start();
 
 echo '<br>';
 if (isset($_SESSION["username"])){
@@ -13,7 +14,7 @@ if (isset($_SESSION["username"])){
     echo '<h2>username is not set</h2>';
 }
 echo '<br>';
-if (isset($_SESSION["username"])){
+if (isset($_SESSION["userdata"])){
     echo '<h2>Data before: '. $_SESSION["userdata"].'</h2>';    
 } else {
     echo '<h2>userdata is not set</h2>';
