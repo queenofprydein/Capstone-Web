@@ -7,22 +7,19 @@
  */
 
 session_start();
-
-echo '<h2>Name before: '. $_SESSION["username"].'</h2>';
-echo '<h2>Data before: '. $_SESSION["userdata"].'</h2>';
     
 if(isset($_SESSION["username"])){
-    echo '<h3>Login Success, Welcome - '.$_SESSION["username"].'</h3>';
+    if($_SESSION["userdata"]=="TRUE"){
+        //echo '<h3>Login Success, Welcome - '.$_SESSION["username"].'</h3>';
+        //echo '<h3>Data flag is set to: ' . $_SESSION["userdata"] .'</h3>';
+    } else {
+        header("location:gather_information.php");
+    }
 } else {
     header("location:index.php");
 }
 
-if($_SESSION["userdata"]=="TRUE"){
-    echo '<h3>Data flag is set to: ' . $_SESSION["userdata"] .'</h3>';
-} else {
-    echo '<h1>CHANGE TO gather_information.php LEG OF VALIDATION.</h1>';
-    header("location:gather_information.php");
-}
+
 
 ?>
 
@@ -58,7 +55,10 @@ This program can be freely copied and/or distributed.
         </style>
     </head>
     <body>
-        <div class="ex2">
+        <div class="ex2" align="center">
+            <img src="images/SamaritanLogohires.jpg" class="img-fluid" alt="Samaritan Ministries Logo">
+            <br>
+            <br>
             <?php
             include "db_connect.php";
 
@@ -108,8 +108,8 @@ This program can be freely copied and/or distributed.
             }
             ?>
 
-            <form action="change.php" class="btn btn-info">
-                <input type="submit" name="button_logout" value="Change User">
+            <form action="change.php">
+                <input type="submit" class="btn btn-info" name="button_logout" value="Does Not Work">
             </form>
 
 
@@ -117,15 +117,15 @@ This program can be freely copied and/or distributed.
             <br>
 
             <form action="change_information.php">
-                <input type="submit" name="button_change_info" value="Change Personal Information">
+                <input type="submit" class="btn btn-info" name="button_change_info" value="Change Personal Information">
             </form>
             <br>
             <form action="add_shift.php">
-                <input type="submit" name="button_add_shifts" value="Add Shifts">
+                <input type="submit" class="btn btn-info" name="button_add_shifts" value="Add Shifts">
             </form>
             <br>
             <form action="logout.php">
-                <input type="submit" name="button_logout" value="Logout">
+                <input type="submit" class="btn btn-info" name="button_logout" value="Logout">
             </form>
             <br>
         </div>

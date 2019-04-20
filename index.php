@@ -63,30 +63,40 @@ try {
         if(empty($_POST["username"]) || empty($_POST["password"])){
             $message = '<label>All fields are required</label>';
         } else {
-            $query = 'SELECT * FROM users WHERE username = :username AND password = :password';
+            $query = 'SELECT Hash FROM Volunteer_Login WHERE Login_Name = :username';
             $statement = $connect->prepare($query);
             //$statement->execute(['username' => $_POST["username"], 'password' => $_POST["password"]]);
 //            $username = $_POST["username"];
 //            $password = $_POST["password"];
 
-            $statement->execute(['username' => $_POST["username"], 'password' => $_POST["password"]]);
-            $items = $statement->fetchAll();
-            $count = $statement->rowCount();
-            echo "Rows:" . $count;
-            if($count > 0){
-                echo "got here";
+            $statement->execute(['username' => $_POST["username"]]);
+            //$hash_code = $statement->fetchAll();
+            $result = $statement->fetch();
+            
+//            echo $result["Hash"];
+            
+//            echo "<br><pre>";
+//            print_r($result);
+//            echo "</pre></br>";
+//            
+//            $hash_code = $hash_stmt->Hash;
+//            
+//            echo "<br><pre>";
+//            print_r($hash_code);
+//            echo "</pre></br>";
+            
+            if (password_verify($_POST["password"], $result["Hash"])) {
                 $_SESSION["username"] = $_POST["username"];
                 // Set userdata to TRUE if user has data
                 $sql_volunteer = "SELECT Volunteer_ID FROM Volunteer_Login WHERE Login_Name = :username";
                 $statement2 = $connect->prepare($sql_volunteer);
                 $statement2->execute(['username' => $_POST["username"]]);
-                $items2 = $statement2->fetchAll();
-                $count2 = $statement2->rowCount();
-                if($count2 > 0){
-                    $_SESSION["userdata"] = "TRUE";
-                } else {
+                $result2 = $statement2->fetch();
+            
+                if ($result2["Volunteer_ID"] == "") {
                     $_SESSION["userdata"] = "FALSE";
-                    //$_SESSION["userdata"] = "TRUE";
+                } else {
+                    $_SESSION["userdata"] = "TRUE";
                 }
                 //$_SESSION["userdata"] = TRUE;
                 header("location:landing_page.php");

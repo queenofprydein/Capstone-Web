@@ -1,16 +1,30 @@
 <?php
-
 /* 
- * Copyright (C) 2019 Marshall Casey <caseym1325@students.forsythtech.edu>
- * Created for the FTCC course CSC-289-900-2019SP.
- * This program can be freely copied and/or distributed.
+ * Most of this code taken from PHP Manual
+ * https://php.net/session_destroy
+ * Copyright © 2001-2019 The PHP Group
  */
 
+// Initialize the session.
+// If you are using session_name("something"), don't forget it now!
 session_start();
+
+// Unset all of the session variables.
+$_SESSION = array();
+
+// If it's desired to kill the session, also delete the session cookie.
+// Note: This will destroy the session, and not just the session data!
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000,
+        $params["path"], $params["domain"],
+        $params["secure"], $params["httponly"]
+    );
+}
+
+// Finally, destroy the session.
 session_destroy();
 
-    echo '<h3>Login Success, Welcome - '.$_SESSION["username"].'</h3>';
-    echo '<h3>Data flag is set to: ' . $_SESSION["userdata"].'</h3>';
 header("location:landing_page.php");
 
 ?>

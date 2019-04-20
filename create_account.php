@@ -59,8 +59,8 @@ This program can be freely copied and/or distributed.
             <?php
             include 'db_function.php';
 
-            $newUser_Login_Name = "Fred";
-            $newUser_Password = "Fred";
+            $newUser_Login_Name = "Bob";
+            $newUser_Password = "Bob";
             $newUser_Hash = password_hash($newUser_Password, PASSWORD_DEFAULT);
 
             $sql =  "INSERT INTO Volunteer_Login (";

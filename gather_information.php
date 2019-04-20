@@ -144,11 +144,7 @@ $db = connection();
             // See the password_hash() example to see where this came from.
             $hash = '$2y$10$vaX6d7eRcic4NwecxOYCbepde17a672rjpeYxNHb8PzSygU/9NfBW';
 
-            if (password_verify('Password', $hash)) {
-                echo 'Password is valid!';
-            } else {
-                echo 'Invalid password.';
-            }
+
 
             ?> 
 
