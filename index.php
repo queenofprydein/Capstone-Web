@@ -33,24 +33,24 @@ $message = "";
 $_SESSION["userdata"] = "FALSE";
 
 
-            $connect = connection();
+$connect = connection();
 
 
-            //SQL Query
-            //$results = $newAccount->query($sql);
-            //End Query
+//SQL Query
+//$results = $newAccount->query($sql);
+//End Query
 
-            //echo "<br>Hash SQL Results<br>";
-            //echo "<pre>";
-            //var_dump($results);
-            //echo "</pre>";
+//echo "<br>Hash SQL Results<br>";
+//echo "<pre>";
+//var_dump($results);
+//echo "</pre>";
 
 try {
     // Set DSN (Data Source Name)
-//    $dsn = 'sqlsrv:server='. $host .'; Database='. $dbname; 
+    //    $dsn = 'sqlsrv:server='. $host .'; Database='. $dbname; 
 
     // Create PDO instance
-//    $connection = new PDO($dsn, $user, $password);
+    //    $connection = new PDO($dsn, $user, $password);
     
     //$connect = new PDO("sqlsrv:host=$host; dbname=$database", $username, $password); 
     

@@ -36,18 +36,18 @@ This program can be freely copied and/or distributed.
             <br>
             <form method="post">
                 <label>Username</label>
-                <input type="text" name="username" class="form-control" />
+                <input type="text" name="new_username" class="form-control" />
                 <br>
                 
                 <label>Password</label>
-                <input type="password" name="password" class="form-control" />
+                <input type="password" name="new_password" class="form-control" />
                 <br>
                 
                 <label>Repeat Password</label>
-                <input type="password" name="repeat_password" class="form-control" />
+                <input type="password" name="new_repeat_password" class="form-control" />
                 <br>
                 <div  align="right">
-                    <input type="submit" name="button_create_account" class="btn btn-info" value="Create Account" />
+                    <input type="submit" name="create_account" class="btn btn-info" value="Create Account" />
                 </div>
             </form>
             <form action="index.php" >
@@ -57,38 +57,52 @@ This program can be freely copied and/or distributed.
             </form>
 
             <?php
-            include 'db_function.php';
-
-            $newUser_Login_Name = "Bob";
-            $newUser_Password = "Bob";
-            $newUser_Hash = password_hash($newUser_Password, PASSWORD_DEFAULT);
-
-            $sql =  "INSERT INTO Volunteer_Login (";
-            $sql .= "Login_Name, ";
-            $sql .= "Hash";
-            $sql .= ") VALUES (";
-            $sql .= "'". $newUser_Login_Name ."', ";
-            $sql .= "'". $newUser_Hash ."'";
-            $sql .= ")";
-
-            //echo "<br>Hash SQL<br>";
-            //echo $sql;
-
-
-            //$newAccount = connection();
-
-
-            //SQL Query
-            //$results = $newAccount->query($sql);
-            //End Query
-
-            //echo "<br>Hash SQL Results<br>";
-            //echo "<pre>";
-            //var_dump($results);
-            //echo "</pre>";
             
-            // IF SUCCESSFUL NEED TO LOGIN USER
+            if(isset($_POST['create_account'])) {
+           
+                    
 
+                if(empty($_POST["new_username"]) || empty($_POST["new_password"])){
+                    $message = '<label>All fields are required</label>';
+                } else {
+                    if($_POST["new_password"] == $_POST["new_repeat_password"]){
+                        include 'db_function.php';
+
+                        $newUser_Login_Name = $_POST["new_username"];
+                        $newUser_Password = $_POST["new_password"];
+                        $newUser_Hash = password_hash($newUser_Password, PASSWORD_DEFAULT);
+
+                        $sql =  "INSERT INTO Volunteer_Login (";
+                        $sql .= "Login_Name, ";
+                        $sql .= "Hash";
+                        $sql .= ") VALUES (";
+                        $sql .= "'". $newUser_Login_Name ."', ";
+                        $sql .= "'". $newUser_Hash ."'";
+                        $sql .= ")";
+
+                        //echo "<br>Hash SQL<br>";
+                        //echo $sql;
+
+
+                        $newAccount = connection();
+
+
+                        //SQL Query
+                        $results = $newAccount->query($sql);
+                        //End Query
+
+                        //echo "<br>Hash SQL Results<br>";
+                        //echo "<pre>";
+                        //var_dump($results);
+                        //echo "</pre>";
+
+                        // IF SUCCESSFUL NEED TO LOGIN USER
+                    } else {
+                        echo 'Password Do Not Match';
+                    } 
+                }
+
+            }
             ?>
         </div>
     </body>
