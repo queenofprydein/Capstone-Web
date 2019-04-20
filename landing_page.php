@@ -8,13 +8,22 @@
 
 session_start();
 
-if(isset($_SESSION["username"]) || $_SESSION("userdata")){
-//if(isset($_SESSION["username"])){
-    echo'<h3>Login Success, Welcome - '.$_SESSION["username"].'</h3>';
-    //echo'<br><br><a href="logout.php">Logout</a>';
+echo '<h2>Name before: '. $_SESSION["username"].'</h2>';
+echo '<h2>Data before: '. $_SESSION["userdata"].'</h2>';
+    
+if(isset($_SESSION["username"])){
+    echo '<h3>Login Success, Welcome - '.$_SESSION["username"].'</h3>';
 } else {
     header("location:index.php");
 }
+
+if($_SESSION["userdata"]){
+    echo '<h3>Data flag is set to: ' . $_SESSION["userdata"].'</h3>';
+} else {
+    echo '<h1>CHANGE TO gather_information.php LEG OF VALIDATION.</h1>';
+    //header("location:gather_information.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -49,55 +58,56 @@ This program can be freely copied and/or distributed.
         </style>
     </head>
     <body>
-        <?php
-        include "db_connect.php";
-        
-
-        $id = 3;
-        $sql_volunteer = 'SELECT * FROM Volunteer';
-        $stmt_volunteer = $connection->query($sql_volunteer);
-
-        //echo '<form action="#" method="post">';
-        echo '<select name="selected_volunteer">';
-        while ($row = $stmt_volunteer->fetch()) {
-            //Volunteer_ID
-            //Last_Name
-            //First_Name
-            //Middle_Name
-            //Phone
-            //Email
-            //Preferred_Method_Of_Contact
-            //BirthDate
-            //Gender
-            //Emergency_Contact_Phone
-            //Emergency_Contact_Name
-            //Community_Service
-            echo '<option value="' . $row->Volunteer_ID . '">' . $row->First_Name . '</option>';
-        }
-        echo '</select>';
-        //echo '</form>';
-        echo '<br>';
-        ?>  
-        
-
-        
-        
-        
-        
-        <?php
-        include 'db_function.php';
-        $db = connection();
-
-        //SQL Query
-        $sql = 'SELECT * FROM Volunteer_Schedule';
-        $results = $db->query($sql);
-        //End Query
-
-        foreach($results as $row){
-            echo $row['Shift_ID'].', '.$row['Volunteer_ID'].'<br>';
-        }
-        ?>
         <div class="ex2">
+            <?php
+            include "db_connect.php";
+
+
+            $id = 3;
+            $sql_volunteer = 'SELECT * FROM Volunteer';
+            $stmt_volunteer = $connection->query($sql_volunteer);
+
+            //echo '<form action="#" method="post">';
+            echo '<select name="selected_volunteer">';
+            while ($row = $stmt_volunteer->fetch()) {
+                //Volunteer_ID
+                //Last_Name
+                //First_Name
+                //Middle_Name
+                //Phone
+                //Email
+                //Preferred_Method_Of_Contact
+                //BirthDate
+                //Gender
+                //Emergency_Contact_Phone
+                //Emergency_Contact_Name
+                //Community_Service
+                echo '<option value="' . $row->Volunteer_ID . '">' . $row->First_Name . '</option>';
+            }
+            echo '</select>';
+            //echo '</form>';
+            echo '<br>';
+            ?>  
+
+
+
+
+
+
+            <?php
+            include 'db_function.php';
+            $db = connection();
+
+            //SQL Query
+            $sql = 'SELECT * FROM Volunteer_Schedule';
+            $results = $db->query($sql);
+            //End Query
+
+            foreach($results as $row){
+                echo $row['Shift_ID'].', '.$row['Volunteer_ID'].'<br>';
+            }
+            ?>
+
             <form action="change.php" class="btn btn-info">
                 <input type="submit" name="button_logout" value="Change User">
             </form>

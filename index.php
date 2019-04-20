@@ -12,6 +12,21 @@ This program can be freely copied and/or distributed.
 
 <?php
 session_start();
+
+echo '<br>';
+if (isset($_SESSION["username"])){
+    echo '<h2>Name before: '. $_SESSION["username"].'</h2>';    
+} else {
+    echo '<h2>username is not set</h2>';
+}
+echo '<br>';
+if (isset($_SESSION["username"])){
+    echo '<h2>Data before: '. $_SESSION["userdata"].'</h2>';    
+} else {
+    echo '<h2>userdata is not set</h2>';
+}
+echo '<br>';
+
 //include "db_connect.php";
 $host = "SQL5008.site4now.net";
 $db_username = "DB_A47087_smgroup_admin";
@@ -19,7 +34,7 @@ $db_password = "ftccgroup1";
 $database = "DB_A47087_smgroup";
 $message = "";
 
-
+$_SESSION["userdata"] = FALSE;
 
 try {
     // Set DSN (Data Source Name)

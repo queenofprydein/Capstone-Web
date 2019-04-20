@@ -8,6 +8,9 @@
 
 session_start();
 session_destroy();
-header("location:index.php");
+
+    echo '<h3>Login Success, Welcome - '.$_SESSION["username"].'</h3>';
+    echo '<h3>Data flag is set to: ' . $_SESSION["userdata"].'</h3>';
+header("location:landing_page.php");
 
 ?>

@@ -6,6 +6,22 @@
  * This program can be freely copied and/or distributed.
  */
 
+echo '<br>';
+if (isset($_SESSION["username"])){
+    echo '<h2>Name before: '. $_SESSION["username"].'</h2>';    
+} else {
+    echo '<h2>username is not set</h2>';
+}
+echo '<br>';
+if (isset($_SESSION["username"])){
+    echo '<h2>Data before: '. $_SESSION["userdata"].'</h2>';    
+} else {
+    echo '<h2>userdata is not set</h2>';
+}
+echo '<br>';
+
+
+
 ?>
 <html>
     <head>
