@@ -57,53 +57,61 @@ This program can be freely copied and/or distributed.
             </form>
 
             <?php
+            session_start();
+            include 'db_function.php';
+            $connect = connection();
             
-            if(isset($_POST['create_account'])) {
-           
-                    
-
-                if(empty($_POST["new_username"]) || empty($_POST["new_password"])){
-                    $message = '<label>All fields are required</label>';
-                } else {
-                    if($_POST["new_password"] == $_POST["new_repeat_password"]){
-                        include 'db_function.php';
-
+            try{
+                $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                if(isset($_POST['create_account'])) {
+                    if(empty($_POST["new_username"]) || empty($_POST["new_password"])){
+                        $message = '<label>All fields are required</label>';
+                    } else {
                         $newUser_Login_Name = $_POST["new_username"];
                         $newUser_Password = $_POST["new_password"];
-                        $newUser_Hash = password_hash($newUser_Password, PASSWORD_DEFAULT);
-
-                        $sql =  "INSERT INTO Volunteer_Login (";
-                        $sql .= "Login_Name, ";
-                        $sql .= "Hash";
-                        $sql .= ") VALUES (";
-                        $sql .= "'". $newUser_Login_Name ."', ";
-                        $sql .= "'". $newUser_Hash ."'";
-                        $sql .= ")";
-
-                        //echo "<br>Hash SQL<br>";
-                        //echo $sql;
+                        $sql_user_test =  "SELECT Login_Name FROM Volunteer_Login WHERE Login_Name = :username";
+                        $statement = $connect->prepare($sql_user_test);
+                        $statement->execute(['username' => $newUser_Login_Name]);
+                        $result2 = $statement->fetch();
+                        if($result2["Login_Name"] == $newUser_Login_Name){
+                                $message = '<label>User name already exists</label>';                                
+                        } else {
+                            if($_POST["new_password"] == $_POST["new_repeat_password"]){
 
 
-                        $newAccount = connection();
+                                $newUser_Hash = password_hash($newUser_Password, PASSWORD_DEFAULT);
 
+                                $sql =  "INSERT INTO Volunteer_Login (";
+                                $sql .= "Login_Name, ";
+                                $sql .= "Hash";
+                                $sql .= ") VALUES (";
+                                $sql .= "'". $newUser_Login_Name ."', ";
+                                $sql .= "'". $newUser_Hash ."'";
+                                $sql .= ")";
 
-                        //SQL Query
-                        $results = $newAccount->query($sql);
-                        //End Query
+                                //SQL Query
+                                $results = $connect->query($sql);
+                                //End Query
 
-                        //echo "<br>Hash SQL Results<br>";
-                        //echo "<pre>";
-                        //var_dump($results);
-                        //echo "</pre>";
+                                // IF SUCCESSFUL NEED TO LOGIN USER
+                                $_SESSION["username"] = $_POST["new_username"];
+                                header("location:landing_page.php");
+                            } else {
+                                $message = '<label>Passwords Do Not Match</label>';
+                            } 
+                        }
+                    }
 
-                        // IF SUCCESSFUL NEED TO LOGIN USER
-                    } else {
-                        echo 'Password Do Not Match';
-                    } 
                 }
-
+            } catch (PDOException $error) {
+                $message = $error->getMessage();
             }
             ?>
+            <?php
+            if (isset($message)) {
+                echo '<label class="text-danger" align="right">' . $message . '</label>';
+            }
+            ?>  
         </div>
     </body>
 </html>
