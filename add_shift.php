@@ -13,9 +13,7 @@ This program can be freely copied and/or distributed.
     <head>
         <meta charset="UTF-8">
         <title>SM - Select Shift</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
         <style>
             div.ex1 {
               width:500px;
@@ -87,7 +85,7 @@ This program can be freely copied and/or distributed.
                     //Volunteer_Needed
                     //Males_Only
                     //Minimum_Age
-                    echo '<input type="checkbox" name="shift_list[]" value="' . $row->Shift_ID . '"> ';
+                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row->Shift_ID . '"> ';
                     //echo $row->Shift_Number . '#';
                     echo $row->Start_DateTime . ' until ';
                     echo $row->End_DateTime;
