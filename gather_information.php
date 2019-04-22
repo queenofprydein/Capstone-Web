@@ -34,7 +34,8 @@ try{
         $sql .= "Gender, ";
         $sql .= "Emergency_Contact_Phone, ";
         $sql .= "Emergency_Contact_Name, ";
-        $sql .= "Community_Service";
+        $sql .= "Community_Service, ";
+        $sql .= "Login_Name";
         $sql .= ") VALUES (";
         $sql .= ":input_Last_Name, ";
         $sql .= ":input_First_Name, ";
@@ -46,17 +47,18 @@ try{
         $sql .= ":input_Gender, ";
         $sql .= ":input_Emergency_Contact_Phone, ";
         $sql .= ":input_Emergency_Contact_Name, ";
-        $sql .= ":input_Community_Service ";
+        $sql .= ":input_Community_Service, ";
+        $sql .= ":input_Login_Name ";        
         $sql .= ")";
         
         "SELECT Login_Name FROM Volunteer_Login WHERE Login_Name = :username";
         
-        $statement = $connect->prepare($query);
+        $statement = $connect->prepare($sql);
         //$statement->execute(['username' => $_POST["username"], 'password' => $_POST["password"]]);
 
 
-        $statement->execute(['username' => $_POST["username"]]);
-        $result = $statement->fetch();
+        //$statement->execute(['username' => $_POST["username"]]);
+        
         
 $statement->execute([
 'input_Last_Name' => $_POST["Last_Name"], 
@@ -70,9 +72,12 @@ $statement->execute([
 'input_Emergency_Contact_Phone' => $_POST["Emergency_Contact_Phone"], 
 'input_Emergency_Contact_Name' => $_POST["Emergency_Contact_Name"], 
 'input_Community_Service' => $_POST["Community_Service"], 
+'input_Login_Name' => $_SESSION["username"] 
 ]);
-        
-        
+
+// IS THIS FETCH LINE REALLY NEEDED?
+        $result = $statement->fetch();
+        //$result = $statement->fetch();
         //SQL Query
         //$results = $connect->query($sql);
         //End Query
@@ -162,13 +167,13 @@ $statement->execute([
                 <label>Email</label>
                 <input type="text" name="Email" class="form-control" />
                 <br>
-                <label>Preferred_Method_Of_Contact</label>
+                <label>Preferred_Method_Of_Contact (E, P, or T)</label>
                 <input type="text" name="Preferred_Method_Of_Contact" class="form-control" />
                 <br>
                 <label>BirthDate</label>
                 <input type="text" name="BirthDate" class="form-control" />
                 <br>
-                <label>Gender</label>
+                <label>Gender (CD, CR, FE, GN, MA, TF, or TM)</label>
                 <input type="text" name="Gender" class="form-control" />
                 <br>
                 <label># Emergency_Contact_Phone</label>
