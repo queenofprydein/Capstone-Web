@@ -30,7 +30,7 @@ session_start();
 include "db_function.php";
 $message = "";
 
-$_SESSION["userdata"] = "FALSE";
+//$_SESSION["userdata"] = "FALSE";
 
 
 $connect = connection();

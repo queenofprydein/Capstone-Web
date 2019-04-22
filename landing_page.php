@@ -67,14 +67,9 @@ try{
 //        print_r($result);
 //        echo "</pre></br>";
         
-        if(is_array($result))
-        {
-//            echo "Not empty, value is ". $result["Volunteer_ID"];
-            
-        }
-        else
-        {
-//            echo "Empty results set."   ;
+        if(is_array($result)) {
+            $_SESSION["volunteerid"] = $result["Volunteer_ID"];
+        } else {
             header("location:gather_information.php");
         }   
         
@@ -118,6 +113,7 @@ try{
             <br>
             
             <?php
+            // Show schedule here.
 //            echo "Derf:". $volunteer_id;
 //            echo "<pre>";
 //            var_dump($stmt_volunteer_id);
@@ -127,12 +123,12 @@ try{
 
 
 //            $id = 3;
-//            $sql_volunteer = 'SELECT * FROM Volunteer';
-//            $stmt_volunteer = $connection->query($sql_volunteer);
+            $sql_schedule = 'SELECT * FROM Volunteer_Schedule WHERE Volunteer_ID ='. $_SESSION["volunteerid"];
+            $stmt_schedule = $connect->query($sql_schedule);
 //
 //            //echo '<form action="#" method="post">';
 //            echo '<select name="selected_volunteer">';
-//            while ($row = $stmt_volunteer->fetch()) {
+            while ($row = $stmt_schedule->fetch()) {
 //                //Volunteer_ID
 //                //Last_Name
 //                //First_Name
@@ -145,8 +141,13 @@ try{
 //                //Emergency_Contact_Phone
 //                //Emergency_Contact_Name
 //                //Community_Service
-//                echo '<option value="' . $row->Volunteer_ID . '">' . $row->First_Name . '</option>';
-//            }
+                echo '<form action="change.php">';
+                $result["Volunteer_ID"];
+                echo 'Shift: '. $row["Shift_ID"];
+                echo '<input type="submit" class="btn btn-info" name="button_delete" value="delete">';
+                echo '<br>';
+                echo '</form>';
+            }
 //            echo '</select>';
 //            //echo '</form>';
 //            echo '<br>';
@@ -171,9 +172,7 @@ try{
             }
             ?>
 -->
-            <form action="change.php">
-                <input type="submit" class="btn btn-info" name="button_logout" value="Does Not Work">
-            </form>
+
 
 
 
