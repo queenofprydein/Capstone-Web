@@ -118,8 +118,6 @@ try {
         </style>
     </head>
     <body>
-
-        <!--<div class="container" style="width:500px;">-->
         <div class="ex2">
             <img src="images/SamaritanLogohires.jpg" class="img-fluid" alt="Samaritan Ministries Logo">
             <br>
