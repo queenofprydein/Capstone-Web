@@ -87,18 +87,6 @@ try {
             
             if (password_verify($_POST["password"], $result["Hash"])) {
                 $_SESSION["username"] = $_POST["username"];
-                // Set userdata to TRUE if user has data
-                $sql_volunteer = "SELECT Volunteer_ID FROM Volunteer_Login WHERE Login_Name = :username";
-                $statement2 = $connect->prepare($sql_volunteer);
-                $statement2->execute(['username' => $_POST["username"]]);
-                $result2 = $statement2->fetch();
-            
-                if ($result2["Volunteer_ID"] == "") {
-                    $_SESSION["userdata"] = "FALSE";
-                } else {
-                    $_SESSION["userdata"] = "TRUE";
-                }
-                //$_SESSION["userdata"] = TRUE;
                 header("location:landing_page.php");
             } else {
                 $message = '<label>Wrong data</label>';
