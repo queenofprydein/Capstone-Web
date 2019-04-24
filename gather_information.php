@@ -133,24 +133,9 @@ $statement->execute([
     </head>
     <body>
         <div class="ex2">   
-            
-            <?php
-            // This is for debugging only. Remove it for live.
-            echo '<br>';
-            if (isset($_SESSION["username"])){
-                echo '<h2>Name before: '. $_SESSION["username"].'</h2>';    
-            } else {
-                echo '<h2>username is not set</h2>';
-            }
-            echo '<br>';
-            if (isset($_SESSION["userdata"])){
-                echo '<h2>Data before: '. $_SESSION["userdata"].'</h2>';    
-            } else {
-                echo '<h2>userdata is not set</h2>';
-            }
-            echo '<br>';
-            ?>
-
+            <img src="images/SamaritanLogohires.jpg" class="img-fluid" alt="Samaritan Ministries Logo">
+            <br>
+            <br>
             <form method="post">
                 <label>Last_Name</label>
                 <input type="text" name="Last_Name" class="form-control" />
