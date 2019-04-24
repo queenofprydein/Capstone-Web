@@ -120,6 +120,12 @@ try{
                 $sql = 'SELECT * FROM Volunteer_Schedule WHERE Volunteer_ID ='. $_SESSION["volunteerid"];
                 $stmt = $connect->query($sql);
                 while ($row = $stmt->fetch()) {
+                    // THIS STUFF NEEDS TO BE ENTERED BELOW
+//                    <div class="custom-control custom-checkbox">  
+//                        <input type="checkbox" class="custom-control-input" id="customCheck3">
+//                        <label class="custom-control-label" for="customCheck3">Check this custom checkbox</label>
+//                    </div>
+                    // ALL THE WAY TO HERE
                     echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '"> ';
                     echo 'Shift: ';
                     echo $row["Shift_ID"] . '  Volunteer: ';
