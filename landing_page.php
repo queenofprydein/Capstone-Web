@@ -16,9 +16,9 @@ This program can be freely copied and/or distributed.
     <head>
         <meta charset="UTF-8">
         <title>SM - Landing Page</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
         <style>
             div.ex1 {
               width:500px;
@@ -107,74 +107,52 @@ try{
 
 ?>
         
-        <div class="ex2" align="center">
+        
+            
+
+
+            <div class="ex2" align="center">            
             <img src="images/SamaritanLogohires.jpg" class="img-fluid" alt="Samaritan Ministries Logo">
             <br>
             <br>
-            
+            <form action="#" method="post">
             <?php
-            // Show schedule here.
-//            echo "Derf:". $volunteer_id;
-//            echo "<pre>";
-//            var_dump($stmt_volunteer_id);
-//            echo "</pre>";
+                $sql = 'SELECT * FROM Volunteer_Schedule WHERE Volunteer_ID ='. $_SESSION["volunteerid"];
+                $stmt = $connect->query($sql);
+                while ($row = $stmt->fetch()) {
+                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '"> ';
+                    echo 'Shift: ';
+                    echo $row["Shift_ID"] . '  Volunteer: ';
+                    echo $row["Volunteer_ID"];
+                    echo '<br>';
+                }
+                ?>
+                <br>
+
+                <input type = "submit" name = "button_delete" value = "Delete Selected Shifts">
+            </form>
+            <br>
+            <br>
             
-            //include "db_connect.php";
+             <?php
 
-
-//            $id = 3;
-            $sql_schedule = 'SELECT * FROM Volunteer_Schedule WHERE Volunteer_ID ='. $_SESSION["volunteerid"];
-            $stmt_schedule = $connect->query($sql_schedule);
-//
-//            //echo '<form action="#" method="post">';
-//            echo '<select name="selected_volunteer">';
-            while ($row = $stmt_schedule->fetch()) {
-//                //Volunteer_ID
-//                //Last_Name
-//                //First_Name
-//                //Middle_Name
-//                //Phone
-//                //Email
-//                //Preferred_Method_Of_Contact
-//                //BirthDate
-//                //Gender
-//                //Emergency_Contact_Phone
-//                //Emergency_Contact_Name
-//                //Community_Service
-                echo '<form action="change.php">';
-                $result["Volunteer_ID"];
-                echo 'Shift: '. $row["Shift_ID"];
-                echo '<input type="submit" class="btn btn-info" name="button_delete" value="delete">';
-                echo '<br>';
-                echo '</form>';
-            }
-//            echo '</select>';
-//            //echo '</form>';
-//            echo '<br>';
-            ?>  
-
-
-
-
-
-<!--
-            ?php
-            //include 'db_function.php';
-            $db = connection();
-
-            //SQL Query
-            $sql = 'SELECT * FROM Volunteer_Schedule';
-            $results = $db->query($sql);
-            //End Query
-
-            foreach($results as $row){
-                echo $row['Shift_ID'].', '.$row['Volunteer_ID'].'<br>';
+            if (null !== filter_input(INPUT_POST, 'button_delete')) {
+                $selected_vol = $_SESSION["volunteerid"];
+                if (null !== filter_input(INPUT_POST, 'shift_list')) {
+                    foreach ($_POST['shift_list'] as $selected_shift) {
+                      //$sql_insert = 'INSERT INTO Volunteer_Schedule (Shift_ID, Volunteer_ID) VALUES ('. $selected_shift. ',  '. $selected_vol .')';
+                        $sql_delete = "DELETE FROM Volunteer_Schedule WHERE Shift_ID = ". $selected_shift ." AND Volunteer_ID =". $_SESSION["volunteerid"];
+                                   // "DELETE FROM Volunteer_Schedule WHERE Shift_ID = ". $selected_shift ." AND Volunteer_ID =". $_SESSION["volunteerid"];
+                        
+                        
+                        echo $sql_delete . "<br>";
+                        $stmt_insert = $connect->query($sql_delete);
+                        //header("Refresh:0");
+                        header("location:landing_page.php");
+                    }
+                }
             }
             ?>
--->
-
-
-
 
             <br>
 
@@ -194,7 +172,22 @@ try{
             if (isset($message)) {
                 echo '<label class="text-danger">' . $message . '</label>';
             }
-            ?>   
+            ?>
+            
+            <div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" id="customCheck1">
+  <label class="custom-control-label" for="customCheck1">Check this custom checkbox</label>
+</div>  
+<div class="custom-control custom-checkbox">
+  <input type="checkbox" class="custom-control-input" id="customCheck2">
+  <label class="custom-control-label" for="customCheck2">Check this custom checkbox</label>
+</div>  
+<div class="custom-control custom-checkbox">  
+    <input type="checkbox" class="custom-control-input" id="customCheck3">
+    <label class="custom-control-label" for="customCheck3">Check this custom checkbox</label>
+</div>
+            
+            
         </div>
     </body>
 </html>
