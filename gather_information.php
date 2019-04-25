@@ -23,69 +23,70 @@ if(isset($_SESSION["username"])){
 try{
     $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     if(isset($_POST['add_data'])){
-        $sql =  "INSERT INTO Volunteer (";
-        $sql .= "Last_Name, ";
-        $sql .= "First_Name, ";
-        $sql .= "Middle_Name, ";
-        $sql .= "Phone, ";
-        $sql .= "Email, ";
-        $sql .= "Preferred_Method_Of_Contact, ";
-        $sql .= "BirthDate, ";
-        $sql .= "Gender, ";
-        $sql .= "Emergency_Contact_Phone, ";
-        $sql .= "Emergency_Contact_Name, ";
-        $sql .= "Community_Service, ";
-        $sql .= "Login_Name";
-        $sql .= ") VALUES (";
-        $sql .= ":input_Last_Name, ";
-        $sql .= ":input_First_Name, ";
-        $sql .= ":input_Middle_Name, ";
-        $sql .= ":input_Phone, ";
-        $sql .= ":input_Email, ";
-        $sql .= ":input_Preferred_Method_Of_Contact, ";
-        $sql .= ":input_BirthDate, ";
-        $sql .= ":input_Gender, ";
-        $sql .= ":input_Emergency_Contact_Phone, ";
-        $sql .= ":input_Emergency_Contact_Name, ";
-        $sql .= ":input_Community_Service, ";
-        $sql .= ":input_Login_Name ";        
-        $sql .= ")";
-        
-        "SELECT Login_Name FROM Volunteer_Login WHERE Login_Name = :username";
-        
-        $statement = $connect->prepare($sql);
-        //$statement->execute(['username' => $_POST["username"], 'password' => $_POST["password"]]);
+        $date = DateTime::createFromFormat('m/d/Y', $_POST["BirthDate"]);
+        $date_errors = DateTime::getLastErrors();
+        if (preg_match("/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/", $_POST["Phone"])){
+            $message = '<label>No Phone</label>';
+        } elseif (!filter_var($_POST["Email"], FILTER_VALIDATE_EMAIL)){
+            $message = '<label>Bad Email</label>';
+        } elseif ($date_errors['warning_count'] + $date_errors['error_count'] > 0) {
+            $message = '<label>Bad BirthDate</label>';
+        } elseif (preg_match("/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/", $_POST["Emergency_Contact_Phone"])){
+            $message = '<label>Bad Emergency_Contact_Phone</label>';
+        } else {
+            $sql =  "INSERT INTO Volunteer (";
+            $sql .= "Last_Name, ";
+            $sql .= "First_Name, ";
+            $sql .= "Middle_Name, ";
+            $sql .= "Phone, ";
+            $sql .= "Email, ";
+            $sql .= "Preferred_Method_Of_Contact, ";
+            $sql .= "BirthDate, ";
+            $sql .= "Gender, ";
+            $sql .= "Emergency_Contact_Phone, ";
+            $sql .= "Emergency_Contact_Name, ";
+            $sql .= "Community_Service, ";
+            $sql .= "Login_Name";
+            $sql .= ") VALUES (";
+            $sql .= ":input_Last_Name, ";
+            $sql .= ":input_First_Name, ";
+            $sql .= ":input_Middle_Name, ";
+            $sql .= ":input_Phone, ";
+            $sql .= ":input_Email, ";
+            $sql .= ":input_Preferred_Method_Of_Contact, ";
+            $sql .= ":input_BirthDate, ";
+            $sql .= ":input_Gender, ";
+            $sql .= ":input_Emergency_Contact_Phone, ";
+            $sql .= ":input_Emergency_Contact_Name, ";
+            $sql .= ":input_Community_Service, ";
+            $sql .= ":input_Login_Name ";        
+            $sql .= ")";
 
+            //"SELECT Login_Name FROM Volunteer_Login WHERE Login_Name = :username";
 
-        //$statement->execute(['username' => $_POST["username"]]);
-        
-        
-$statement->execute([
-'input_Last_Name' => $_POST["Last_Name"], 
-'input_First_Name' => $_POST["First_Name"], 
-'input_Middle_Name' => $_POST["Middle_Name"], 
-'input_Phone' => $_POST["Phone"], 
-'input_Email' => $_POST["Email"], 
-'input_Preferred_Method_Of_Contact' => $_POST["Preferred_Method_Of_Contact"], 
-'input_BirthDate' => $_POST["BirthDate"], 
-'input_Gender' => $_POST["Gender"], 
-'input_Emergency_Contact_Phone' => $_POST["Emergency_Contact_Phone"], 
-'input_Emergency_Contact_Name' => $_POST["Emergency_Contact_Name"], 
-'input_Community_Service' => $_POST["Community_Service"], 
-'input_Login_Name' => $_SESSION["username"] 
-]);
+//            $statement = $connect->prepare($sql);
 
-// IS THIS FETCH LINE REALLY NEEDED?
-        $result = $statement->fetch();
-        //$result = $statement->fetch();
-        //SQL Query
-        //$results = $connect->query($sql);
-        //End Query
+//            $statement->execute([
+//            'input_Last_Name' => $_POST["Last_Name"], 
+//            'input_First_Name' => $_POST["First_Name"], 
+//            'input_Middle_Name' => $_POST["Middle_Name"], 
+//            'input_Phone' => $_POST["Phone"], 
+//            'input_Email' => $_POST["Email"], 
+//            'input_Preferred_Method_Of_Contact' => $_POST["Preferred_Method_Of_Contact"], 
+//            'input_BirthDate' => $_POST["BirthDate"], 
+//            'input_Gender' => $_POST["Gender"], 
+//            'input_Emergency_Contact_Phone' => $_POST["Emergency_Contact_Phone"], 
+//            'input_Emergency_Contact_Name' => $_POST["Emergency_Contact_Name"], 
+//            'input_Community_Service' => $_POST["Community_Service"], 
+//            'input_Login_Name' => $_SESSION["username"] 
+//            ]);
 
-        $message = '<label>'. $sql .'</label>';
+            // IS THIS FETCH LINE REALLY NEEDED?
+//            $result = $statement->fetch();
 
+            $message = '<label>'. $sql .'</label>';
+        }
     }
-    
 } catch (PDOException $error) {
     $message = $error->getMessage();
 }
@@ -138,10 +139,10 @@ $statement->execute([
             <br>
             <form method="post">
                 <label>Last_Name</label>
-                <input type="text" name="Last_Name" class="form-control" />
+                <input type="text" name="Last_Name" required class="form-control" />
                 <br>
                 <label>First_Name</label>
-                <input type="text" name="First_Name" class="form-control" />
+                <input type="text" name="First_Name" required class="form-control" />
                 <br>
                 <label># Middle_Name</label>
                 <input type="text" name="Middle_Name" class="form-control" />
@@ -150,16 +151,27 @@ $statement->execute([
                 <input type="text" name="Phone" class="form-control" />
                 <br>
                 <label>Email</label>
-                <input type="text" name="Email" class="form-control" />
+                <input type="text" name="Email" required class="form-control" />
                 <br>
                 <label>Preferred_Method_Of_Contact (E, P, or T)</label>
                 <input type="text" name="Preferred_Method_Of_Contact" class="form-control" />
                 <br>
                 <label>BirthDate</label>
-                <input type="text" name="BirthDate" class="form-control" />
+                <input type="text" name="BirthDate" required class="form-control" />
                 <br>
-                <label>Gender (CD, CR, FE, GN, MA, TF, or TM)</label>
-                <input type="text" name="Gender" class="form-control" />
+                <label>Gender</label>
+                
+                <select required>
+                    <option value="">None</option>
+                    <option value="volvo">CD</option>
+                    <option value="saab">CR</option>
+                    <option value="mercedes">FE</option>
+                    <option value="audi">GN</option>
+                    <option value="MA">MA</option>
+                    <option value="TF">TF</option>
+                    <option value="TM">TM</option>
+                </select>
+                
                 <br>
                 <label># Emergency_Contact_Phone</label>
                 <input type="text" name="Emergency_Contact_Phone" class="form-control" />
@@ -168,7 +180,16 @@ $statement->execute([
                 <input type="text" name="Emergency_Contact_Name" class="form-control" />
                 <br>
                 <label>Community_Service</label>
-                <input type="text" name="Community_Service" class="form-control" />
+                <select required>
+                    <option value="">None</option>
+                    <option value="volvo">Y</option>
+                    <option value="saab">N</option>
+                    <option value="mercedes">FE</option>
+                    <option value="audi">GN</option>
+                    <option value="MA">MA</option>
+                    <option value="TF">TF</option>
+                    <option value="TM">TM</option>
+                </select>
                 <br>
                 
                 <div  align="right"> 
