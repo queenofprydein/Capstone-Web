@@ -155,55 +155,36 @@ try{
                 <label>E-Mail (required)</label>
                 <input type="text" name="Email" required class="form-control" />
                 <br>
-                
-    <div class="form-group">
-        <label for="Method_Of_Contact_ID">Preferred Method Of Contact (required)</label>
-        <select class="form-control" id="Method_Of_Contact_ID" name="Preferred_Method_Of_Contact" required>
-            <option value="">None</option>
-            <?php
-                // Make a loop for these things
-            ?>
-            <option value="E">E</option>
-            <option value="P">P</option>
-            <option value="T">T</option>
-        </select>
-    </div>
-
-             <input type="text" name="Preferred_Method_Of_Contact" class="form-control" />
+                <div class="form-group">
+                    <label for="Method_Of_Contact_ID">Preferred Method Of Contact (required)</label>
+                    <select class="form-control" id="Method_Of_Contact_ID" name="Preferred_Method_Of_Contact" required>
+                        <option value="">None</option>
+                        <?php
+                        $sql = "SELECT * FROM Preferred_Method_Of_Contact";
+                        $statement = $connect->query($sql);
+                        while ($row = $statement->fetch()) {
+                            echo '<option value="'. $row["Method_Name"] .'">'. $row["Method_Description"] .'</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
                 <br>
                 <label>Birth Date (required)</label>
                 <input type="text" name="BirthDate" required class="form-control" />
                 <br>
-  
-    <div class="form-group">
-        <label for="Gender_ID">Gender (required)</label>
-        <select class="form-control" id="Gender_ID" name="Gender" required>
-            <option value="">None</option>
-            <?php
-            $sql = "SELECT * FROM Gender";
-            $statement = $connect->query($sql);
-            $result = $statement->fetch();
-                
-//            echo "<pre>";
-//            var_dump($result);
-//            echo "</pre>";
-
-            while ($row = $statement->fetch()) {
-                echo '<option value="'. $row["Gender_Description"] .'">'. $row["Gender"] .'</option>';
-            } 
-            ?>
-            <!--
-            <option value="CD">CD</option>
-            <option value="CR">CR</option>
-            <option value="FE">FE</option>
-            <option value="GN">GN</option>
-            <option value="MA">MA</option>
-            <option value="TF">TF</option>
-            <option value="TM">TM</option>
-            -->
-        </select>
-    </div>
-
+                <div class="form-group">
+                    <label for="Gender_ID">Gender (required)</label>
+                    <select class="form-control" id="Gender_ID" name="Gender" required>
+                        <option value="">None</option>
+                        <?php
+                        $sql = "SELECT * FROM Gender";
+                        $statement = $connect->query($sql);
+                        while ($row = $statement->fetch()) {
+                            echo '<option value="'. $row["Gender"] .'">'. $row["Gender_Description"] .'</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
                 <br>
                 <label>Emergency Contact Name</label>
                 <input type="text" name="Emergency_Contact_Name" class="form-control" />
@@ -211,19 +192,14 @@ try{
                 <label>Emergency Contact Phone Number</label>
                 <input type="text" name="Emergency_Contact_Phone" class="form-control" />
                 <br>
-                
-                
-    <div class="form-group">
-        <label for="Community_Service_ID">Is This For Community Service (required)</label>
-        <select class="form-control" id="Community_Service_ID" name="Community_Service" required>
-            <option value="">None</option>
-            <?php
-                // Make a loop for these things
-            ?>
-            <option value="E">Y</option>
-            <option value="P">N</option>
-        </select>
-    </div>
+                <div class="form-group">
+                    <label for="Community_Service_ID">Is This For Community Service (required)</label>
+                    <select class="form-control" id="Community_Service_ID" name="Community_Service" required>
+                        <option value="">None</option>
+                        <option value="Y">Y</option>
+                        <option value="N">N</option>
+                    </select>
+                </div>
                 <br>
                 <div  align="right"> 
                     <input type="submit" name="add_data" class="btn btn-success" value="Add Data">
