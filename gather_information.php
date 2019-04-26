@@ -11,14 +11,16 @@ This program can be freely copied and/or distributed.
 -->
 <?php
 session_start();
-include 'db_function.php';
-$connect = connection();
+
 
 if(isset($_SESSION["username"])){
     //echo '<h3>Login Success, Welcome - '.$_SESSION["username"].'</h3>';
 } else {
     header("location:index.php");
 }
+
+include 'db_function.php';
+$connect = connection();
 
 try{
     $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -138,60 +140,91 @@ try{
             <br>
             <br>
             <form method="post">
-                <label>Last_Name</label>
+                <label>Last Name (required)</label>
                 <input type="text" name="Last_Name" required class="form-control" />
                 <br>
-                <label>First_Name</label>
+                <label>First Name (required)</label>
                 <input type="text" name="First_Name" required class="form-control" />
                 <br>
-                <label># Middle_Name</label>
+                <label>Middle Name</label>
                 <input type="text" name="Middle_Name" class="form-control" />
                 <br>
-                <label># Phone</label>
+                <label>Phone</label>
                 <input type="text" name="Phone" class="form-control" />
                 <br>
-                <label>Email</label>
+                <label>E-Mail (required)</label>
                 <input type="text" name="Email" required class="form-control" />
                 <br>
-                <label>Preferred_Method_Of_Contact (E, P, or T)</label>
-                <input type="text" name="Preferred_Method_Of_Contact" class="form-control" />
+                
+    <div class="form-group">
+        <label for="Method_Of_Contact_ID">Preferred Method Of Contact (required)</label>
+        <select class="form-control" id="Method_Of_Contact_ID" name="Preferred_Method_Of_Contact" required>
+            <option value="">None</option>
+            <?php
+                // Make a loop for these things
+            ?>
+            <option value="E">E</option>
+            <option value="P">P</option>
+            <option value="T">T</option>
+        </select>
+    </div>
+
+             <input type="text" name="Preferred_Method_Of_Contact" class="form-control" />
                 <br>
-                <label>BirthDate</label>
+                <label>Birth Date (required)</label>
                 <input type="text" name="BirthDate" required class="form-control" />
                 <br>
-                <label>Gender</label>
+  
+    <div class="form-group">
+        <label for="Gender_ID">Gender (required)</label>
+        <select class="form-control" id="Gender_ID" name="Gender" required>
+            <option value="">None</option>
+            <?php
+            $sql = "SELECT * FROM Gender";
+            $statement = $connect->query($sql);
+            $result = $statement->fetch();
                 
-                <select required>
-                    <option value="">None</option>
-                    <option value="volvo">CD</option>
-                    <option value="saab">CR</option>
-                    <option value="mercedes">FE</option>
-                    <option value="audi">GN</option>
-                    <option value="MA">MA</option>
-                    <option value="TF">TF</option>
-                    <option value="TM">TM</option>
-                </select>
-                
+//            echo "<pre>";
+//            var_dump($result);
+//            echo "</pre>";
+
+            while ($row = $statement->fetch()) {
+                echo '<option value="'. $row["Gender_Description"] .'">'. $row["Gender"] .'</option>';
+            } 
+            ?>
+            <!--
+            <option value="CD">CD</option>
+            <option value="CR">CR</option>
+            <option value="FE">FE</option>
+            <option value="GN">GN</option>
+            <option value="MA">MA</option>
+            <option value="TF">TF</option>
+            <option value="TM">TM</option>
+            -->
+        </select>
+    </div>
+
                 <br>
-                <label># Emergency_Contact_Phone</label>
-                <input type="text" name="Emergency_Contact_Phone" class="form-control" />
-                <br>
-                <label># Emergency_Contact_Name</label>
+                <label>Emergency Contact Name</label>
                 <input type="text" name="Emergency_Contact_Name" class="form-control" />
                 <br>
-                <label>Community_Service</label>
-                <select required>
-                    <option value="">None</option>
-                    <option value="volvo">Y</option>
-                    <option value="saab">N</option>
-                    <option value="mercedes">FE</option>
-                    <option value="audi">GN</option>
-                    <option value="MA">MA</option>
-                    <option value="TF">TF</option>
-                    <option value="TM">TM</option>
-                </select>
+                <label>Emergency Contact Phone Number</label>
+                <input type="text" name="Emergency_Contact_Phone" class="form-control" />
                 <br>
                 
+                
+    <div class="form-group">
+        <label for="Community_Service_ID">Is This For Community Service (required)</label>
+        <select class="form-control" id="Community_Service_ID" name="Community_Service" required>
+            <option value="">None</option>
+            <?php
+                // Make a loop for these things
+            ?>
+            <option value="E">Y</option>
+            <option value="P">N</option>
+        </select>
+    </div>
+                <br>
                 <div  align="right"> 
                     <input type="submit" name="add_data" class="btn btn-success" value="Add Data">
                 </div>
