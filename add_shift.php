@@ -89,7 +89,7 @@ $sql .= "AND MINIMUM_AGE = ";
 $sql .=            "(CASE ";
 $sql .=            "WHEN (SELECT BIRTHDATE FROM VOLUNTEER WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"] .") > DATEADD(YEAR, -13, GETDATE()) THEN 0 ";
 $sql .=            "WHEN (SELECT BIRTHDATE FROM VOLUNTEER WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"] .") > DATEADD(YEAR, -18, GETDATE()) THEN 13 ";
-$sql .=            "ELSE 18 END) ";
+$sql .=            "ELSE MINIMUM_AGE END) ";
 $sql .= "GROUP BY SHIFT.SHIFT_ID, SHIFT_DESCRIPTION, START_DATETIME, END_DATETIME, VOLUNTEER_MAXIMUM, MINIMUM_AGE, MALES_ONLY ";
 $sql .= "HAVING COUNT(VOLUNTEER_ID) < VOLUNTEER_MAXIMUM ";
             
@@ -117,9 +117,9 @@ $sql .= "HAVING COUNT(VOLUNTEER_ID) < VOLUNTEER_MAXIMUM ";
                     //Males_Only
                     //Minimum_Age
                     echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["SHIFT_ID"] . '"> ';
-//                    echo $row["SHIFT_DESCRIPTION"] .'-';
+                    echo $row["SHIFT_DESCRIPTION"] .' at ';
                     echo $row["START_DATETIME"] .' until ';
-                    echo $row["END_DATETIME"];
+//                    echo $row["END_DATETIME"];
                     //echo $row->Volunteer_Assigned . '#';
                     //echo $row->Volunteer_Needed . '#';
                     //echo $row->Males_Only . '#';

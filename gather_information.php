@@ -24,17 +24,19 @@ $connect = connection();
 
 try{
     $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    if(isset($_POST['add_data'])){
+    if(filter_input(INPUT_POST, 'add_data', FILTER_SANITIZE_STRING)){
+//    if(isset($_POST['add_data'])){
         $date = DateTime::createFromFormat('m/d/Y', $_POST["BirthDate"]);
         $date_errors = DateTime::getLastErrors();
         if (preg_match("/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/", $_POST["Phone"])){
-            $message = '<label>No Phone</label>';
+            $message = '<label>Invalid phone number entered. Use format ###-###-####</label>';
         } elseif (!filter_var($_POST["Email"], FILTER_VALIDATE_EMAIL)){
-            $message = '<label>Bad Email</label>';
+            $message = '<label>Invalid E-Mail address entered.</label>';
         } elseif ($date_errors['warning_count'] + $date_errors['error_count'] > 0) {
-            $message = '<label>Bad BirthDate</label>';
+            $message = '<label>Invalid date format. Please use mm/dd/yyyy format.</label>';
         } elseif (preg_match("/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/", $_POST["Emergency_Contact_Phone"])){
-            $message = '<label>Bad Emergency_Contact_Phone</label>';
+            $message = '<label>Invalid phone number entered for emergency contact. Use format ###-###-####'
+                    . '</label>';
         } else {
             $sql =  "INSERT INTO Volunteer (";
             $sql .= "Last_Name, ";
@@ -66,27 +68,28 @@ try{
 
             //"SELECT Login_Name FROM Volunteer_Login WHERE Login_Name = :username";
 
-//            $statement = $connect->prepare($sql);
+            $statement = $connect->prepare($sql);
 
-//            $statement->execute([
-//            'input_Last_Name' => $_POST["Last_Name"], 
-//            'input_First_Name' => $_POST["First_Name"], 
-//            'input_Middle_Name' => $_POST["Middle_Name"], 
-//            'input_Phone' => $_POST["Phone"], 
-//            'input_Email' => $_POST["Email"], 
-//            'input_Preferred_Method_Of_Contact' => $_POST["Preferred_Method_Of_Contact"], 
-//            'input_BirthDate' => $_POST["BirthDate"], 
-//            'input_Gender' => $_POST["Gender"], 
-//            'input_Emergency_Contact_Phone' => $_POST["Emergency_Contact_Phone"], 
-//            'input_Emergency_Contact_Name' => $_POST["Emergency_Contact_Name"], 
-//            'input_Community_Service' => $_POST["Community_Service"], 
-//            'input_Login_Name' => $_SESSION["username"] 
-//            ]);
+            $statement->execute([
+            'input_Last_Name' => $_POST["Last_Name"], 
+            'input_First_Name' => $_POST["First_Name"], 
+            'input_Middle_Name' => $_POST["Middle_Name"], 
+            'input_Phone' => $_POST["Phone"], 
+            'input_Email' => $_POST["Email"], 
+            'input_Preferred_Method_Of_Contact' => $_POST["Preferred_Method_Of_Contact"], 
+            'input_BirthDate' => $_POST["BirthDate"], 
+            'input_Gender' => $_POST["Gender"], 
+            'input_Emergency_Contact_Phone' => $_POST["Emergency_Contact_Phone"], 
+            'input_Emergency_Contact_Name' => $_POST["Emergency_Contact_Name"], 
+            'input_Community_Service' => $_POST["Community_Service"], 
+            'input_Login_Name' => $_SESSION["username"] 
+            ]);
 
             // IS THIS FETCH LINE REALLY NEEDED?
 //            $result = $statement->fetch();
 
             $message = '<label>'. $sql .'</label>';
+            header("location:landing_page.php");
         }
     }
 } catch (PDOException $error) {
@@ -139,6 +142,13 @@ try{
             <img src="images/SamaritanLogohires.jpg" class="img-fluid" alt="Samaritan Ministries Logo">
             <br>
             <br>
+            
+            <?php
+            if (isset($message)) {
+                echo '<label class="text-danger" align="right">' . $message . '</label>';
+            }
+            ?> 
+            
             <form method="post">
                 <label>Last Name (required)</label>
                 <input type="text" name="Last_Name" required class="form-control" />
@@ -149,7 +159,7 @@ try{
                 <label>Middle Name</label>
                 <input type="text" name="Middle_Name" class="form-control" />
                 <br>
-                <label>Phone</label>
+                <label>Phone [###-###-####]</label>
                 <input type="text" name="Phone" class="form-control" />
                 <br>
                 <label>E-Mail (required)</label>
@@ -169,7 +179,7 @@ try{
                     </select>
                 </div>
                 <br>
-                <label>Birth Date (required)</label>
+                <label>Birth Date [mm/dd/yyyy] (required)</label>
                 <input type="text" name="BirthDate" required class="form-control" />
                 <br>
                 <div class="form-group">
@@ -177,9 +187,9 @@ try{
                     <select class="form-control" id="Gender_ID" name="Gender" required>
                         <option value="">None</option>
                         <?php
-                        $sql = "SELECT * FROM Gender";
-                        $statement = $connect->query($sql);
-                        while ($row = $statement->fetch()) {
+                        $sql_gender = "SELECT * FROM Gender";
+                        $statement_gender = $connect->query($sql_gender);
+                        while ($row = $statement_gender->fetch()) {
                             echo '<option value="'. $row["Gender"] .'">'. $row["Gender_Description"] .'</option>';
                         }
                         ?>
@@ -189,7 +199,7 @@ try{
                 <label>Emergency Contact Name</label>
                 <input type="text" name="Emergency_Contact_Name" class="form-control" />
                 <br>
-                <label>Emergency Contact Phone Number</label>
+                <label>Emergency Contact Phone Number [###-###-####]</label>
                 <input type="text" name="Emergency_Contact_Phone" class="form-control" />
                 <br>
                 <div class="form-group">
@@ -210,13 +220,6 @@ try{
             <form action="logout.php">
                 <input type="submit" class="btn btn-info" name="button_logout" value="Logout">
             </form>
-            
-            <?php
-            if (isset($message)) {
-                echo '<label class="text-danger" align="right">' . $message . '</label>';
-            }
-            ?> 
-
         </div>
     </body>
 </html>
