@@ -29,6 +29,14 @@ This program can be freely copied and/or distributed.
         </style>
     </head>
     <body>
+        <?php
+            session_start();
+            if(isset($_SESSION["username"])){
+                //echo '<h3>Login Success, Welcome - '.$_SESSION["username"].'</h3>';
+            } else {
+                header("location:index.php");
+            }        
+        ?>
 
         <div class="ex2">   
             <img src="images/SamaritanLogohires.jpg" class="img-fluid" alt="Samaritan Ministries Logo">
@@ -37,15 +45,6 @@ This program can be freely copied and/or distributed.
         
         <form method="post">
             <?php
-
-            session_start();
-
-            if(isset($_SESSION["username"])){
-                //echo '<h3>Login Success, Welcome - '.$_SESSION["username"].'</h3>';
-            } else {
-                header("location:index.php");
-            }
-
             include "db_function.php";
             $connect = connection();
 
@@ -55,8 +54,8 @@ This program can be freely copied and/or distributed.
 
             echo "<h2>Change Whatever is Wrong.<br></h2>";
             echo 'Volunteer ID: ' . $result["Volunteer_ID"] . '<br>';
-            echo '<label>Last_Name</label>';
-            echo 'Last Name: <input type="text" name="last_name" required value="' . $result["Last_Name"] . '"><br>';
+            echo '<label>Last Name</label>';
+            echo '<input type="text" name="last_name" required value="' . $result["Last_Name"] . '"><br>';
             echo 'First Name:<input type="text" name="first_name" required value=' . $result["First_Name"] . '><br>';
             echo 'Middle Name:<input type="text" name="middle_name" value=' . $result["Middle_Name"] . '><br>';
             echo 'Phone:<input type="text" name="phone_number" value=' . $result["Phone"] . '><br>';
@@ -123,22 +122,22 @@ This program can be freely copied and/or distributed.
         
         
 $statement->execute([
-'input_Last_Name' => $_POST["Last_Name"], 
-'input_First_Name' => $_POST["First_Name"], 
-'input_Middle_Name' => $_POST["Middle_Name"], 
-'input_Phone' => $_POST["Phone"], 
-'input_Email' => $_POST["Email"], 
-'input_Preferred_Method_Of_Contact' => $_POST["Preferred_Method_Of_Contact"], 
-'input_BirthDate' => $_POST["BirthDate"], 
-'input_Gender' => $_POST["Gender"], 
-'input_Emergency_Contact_Phone' => $_POST["Emergency_Contact_Phone"], 
-'input_Emergency_Contact_Name' => $_POST["Emergency_Contact_Name"], 
-'input_Community_Service' => $_POST["Community_Service"], 
+'input_Last_Name' => $_POST["last_name"], 
+'input_First_Name' => $_POST["first_name"], 
+'input_Middle_Name' => $_POST["middle_name"], 
+'input_Phone' => $_POST["phone_number"], 
+'input_Email' => $_POST["user_email"], 
+'input_Preferred_Method_Of_Contact' => $_POST["contact_method"], 
+'input_BirthDate' => $_POST["birth_date"], 
+'input_Gender' => $_POST["gender"], 
+'input_Emergency_Contact_Phone' => $_POST["contact_phone"], 
+'input_Emergency_Contact_Name' => $_POST["contact_name"], 
+'input_Community_Service' => $_POST["community_service"], 
 'input_Login_Name' => $_SESSION["username"] 
 ]);
 
 // IS THIS FETCH LINE REALLY NEEDED?
-        $result = $statement->fetch();
+        //$result = $statement->fetch();
         //$result = $statement->fetch();
         //SQL Query
         //$results = $connect->query($sql);
@@ -154,5 +153,11 @@ $statement->execute([
 
 
         ?>
+        
+    <?php
+    if (isset($message)) {
+        echo '<label class="text-danger">' . $message . '</label>';
+    }
+    ?>
 </body>
 </html>
