@@ -101,7 +101,7 @@ $sql .= "HAVING COUNT(VOLUNTEER_ID) < VOLUNTEER_MAXIMUM ";
                 //$sql = 'SELECT * FROM Shift';
             //    $stmt = $connection->query($sql);
             
-            $result = $statement->fetch();
+            //$result = $statement->fetch();
                 
 //            echo "<pre>";
 //            var_dump($result);
