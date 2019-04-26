@@ -43,7 +43,8 @@ This program can be freely copied and/or distributed.
             } else {
                 header("location:index.php");
             }
-            include "db_connect.php";
+            include "db_function.php";
+            $connect = connection();
             ?>
             <form action="#" method="post">
             <?php
@@ -70,10 +71,43 @@ This program can be freely copied and/or distributed.
 //            }
 //            echo '</select>';
 //            echo '<br>';
-
-                $sql = 'SELECT * FROM Shift';
-                $stmt = $connection->query($sql);
-                while ($row = $stmt->fetch()) {
+            
+            
+$sql = "SELECT SHIFT.SHIFT_ID, SHIFT_DESCRIPTION, START_DATETIME, END_DATETIME, MINIMUM_AGE, MALES_ONLY ";
+$sql .= "FROM SHIFT ";
+$sql .= "LEFT JOIN VOLUNTEER_SCHEDULE VOL ON VOL.SHIFT_ID = SHIFT.SHIFT_ID ";
+$sql .= "WHERE START_DATETIME > GETDATE() ";
+$sql .= "AND SHIFT.SHIFT_ID NOT IN ( ";
+$sql .=            "SELECT SHIFT_ID FROM VOLUNTEER_SCHEDULE ";
+$sql .=            "WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"];
+$sql .=            ") ";
+$sql .= "AND MALES_ONLY = ";
+$sql .=            "(CASE WHEN ";
+$sql .=            "(SELECT GENDER FROM VOLUNTEER WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"] .") <> 'MA' THEN 'N' ";
+$sql .=            "ELSE MALES_ONLY END) ";
+$sql .= "AND MINIMUM_AGE = ";
+$sql .=            "(CASE ";
+$sql .=            "WHEN (SELECT BIRTHDATE FROM VOLUNTEER WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"] .") > DATEADD(YEAR, -13, GETDATE()) THEN 0 ";
+$sql .=            "WHEN (SELECT BIRTHDATE FROM VOLUNTEER WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"] .") > DATEADD(YEAR, -18, GETDATE()) THEN 13 ";
+$sql .=            "ELSE 18 END) ";
+$sql .= "GROUP BY SHIFT.SHIFT_ID, SHIFT_DESCRIPTION, START_DATETIME, END_DATETIME, VOLUNTEER_MAXIMUM, MINIMUM_AGE, MALES_ONLY ";
+$sql .= "HAVING COUNT(VOLUNTEER_ID) < VOLUNTEER_MAXIMUM ";
+            
+            
+//            echo "<pre>";
+//            var_dump($sql);
+//            echo "</pre>";
+            $statement = $connect->query($sql);
+                //$sql = 'SELECT * FROM Shift';
+            //    $stmt = $connection->query($sql);
+            
+            $result = $statement->fetch();
+                
+//            echo "<pre>";
+//            var_dump($result);
+//            echo "</pre>";
+                
+                while ($row = $statement->fetch()) {
                     //Shift_ID
                     //Shift_Number
                     //Start_DateTime
@@ -82,10 +116,10 @@ This program can be freely copied and/or distributed.
                     //Volunteer_Needed
                     //Males_Only
                     //Minimum_Age
-                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row->Shift_ID . '"> ';
-                    //echo $row->Shift_Number . '#';
-                    echo $row->Start_DateTime . ' until ';
-                    echo $row->End_DateTime;
+                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["SHIFT_ID"] . '"> ';
+//                    echo $row["SHIFT_DESCRIPTION"] .'-';
+                    echo $row["START_DATETIME"] .' until ';
+                    echo $row["END_DATETIME"];
                     //echo $row->Volunteer_Assigned . '#';
                     //echo $row->Volunteer_Needed . '#';
                     //echo $row->Males_Only . '#';
@@ -105,7 +139,7 @@ This program can be freely copied and/or distributed.
                     foreach ($_POST['shift_list'] as $selected_shift) {
                         $sql_insert = 'INSERT INTO Volunteer_Schedule (Shift_ID, Volunteer_ID) VALUES ('. $selected_shift. ',  '. $selected_vol .')';
                         echo $sql_insert . "<br>";
-                        $stmt_insert = $connection->query($sql_insert);
+                        $stmt_insert = $connect->query($sql_insert);
                         header("location:landing_page.php");
                     }
                 }
