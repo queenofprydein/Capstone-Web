@@ -9,6 +9,30 @@ Copyright (C) 2019
 Created for the FTCC course CSC-289-900-2019SP.
 This program can be freely copied and/or distributed.
 -->
+<?php
+session_start();
+
+if(isset($_SESSION["username"])){
+    //echo '<h3>Login Success, Welcome - '.$_SESSION["username"].'</h3>';
+} else {
+    header("location:index.php");
+}
+include "db_function.php";
+$connect = connection();
+
+if (null !== filter_input(INPUT_POST, 'button_add')) {//to run PHP script on submit
+    $selected_vol = $_SESSION["volunteerid"];  // Storing Selected Value In Variable
+    if (null !== filter_input(INPUT_POST, 'shift_list')) {
+        foreach ($_POST['shift_list'] as $selected_shift) {
+            $sql_insert = 'INSERT INTO Volunteer_Schedule (Shift_ID, Volunteer_ID) VALUES ('. $selected_shift. ',  '. $selected_vol .')';
+            echo $sql_insert . "<br>";
+            $stmt_insert = $connect->query($sql_insert);
+            header("location:landing_page.php");
+        }
+    }
+}
+
+?>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -35,17 +59,7 @@ This program can be freely copied and/or distributed.
 
 
 
-            <?php
-            session_start();
-    
-            if(isset($_SESSION["username"])){
-                //echo '<h3>Login Success, Welcome - '.$_SESSION["username"].'</h3>';
-            } else {
-                header("location:index.php");
-            }
-            include "db_function.php";
-            $connect = connection();
-            ?>
+
             <form action="#" method="post">
             <?php
             //$id = 3;
@@ -73,25 +87,25 @@ This program can be freely copied and/or distributed.
 //            echo '<br>';
             
             
-$sql = "SELECT SHIFT.SHIFT_ID, SHIFT_DESCRIPTION, START_DATETIME, END_DATETIME, MINIMUM_AGE, MALES_ONLY ";
-$sql .= "FROM SHIFT ";
-$sql .= "LEFT JOIN VOLUNTEER_SCHEDULE VOL ON VOL.SHIFT_ID = SHIFT.SHIFT_ID ";
-$sql .= "WHERE START_DATETIME > GETDATE() ";
-$sql .= "AND SHIFT.SHIFT_ID NOT IN ( ";
-$sql .=            "SELECT SHIFT_ID FROM VOLUNTEER_SCHEDULE ";
-$sql .=            "WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"];
-$sql .=            ") ";
-$sql .= "AND MALES_ONLY = ";
-$sql .=            "(CASE WHEN ";
-$sql .=            "(SELECT GENDER FROM VOLUNTEER WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"] .") <> 'MA' THEN 'N' ";
-$sql .=            "ELSE MALES_ONLY END) ";
-$sql .= "AND MINIMUM_AGE = ";
-$sql .=            "(CASE ";
-$sql .=            "WHEN (SELECT BIRTHDATE FROM VOLUNTEER WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"] .") > DATEADD(YEAR, -13, GETDATE()) THEN 0 ";
-$sql .=            "WHEN (SELECT BIRTHDATE FROM VOLUNTEER WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"] .") > DATEADD(YEAR, -18, GETDATE()) THEN 13 ";
-$sql .=            "ELSE MINIMUM_AGE END) ";
-$sql .= "GROUP BY SHIFT.SHIFT_ID, SHIFT_DESCRIPTION, START_DATETIME, END_DATETIME, VOLUNTEER_MAXIMUM, MINIMUM_AGE, MALES_ONLY ";
-$sql .= "HAVING COUNT(VOLUNTEER_ID) < VOLUNTEER_MAXIMUM ";
+            $sql = "SELECT SHIFT.Shift_ID, SHIFT_DESCRIPTION, START_DATETIME, END_DATETIME, MINIMUM_AGE, MALES_ONLY ";
+            $sql .= "FROM SHIFT ";
+            $sql .= "LEFT JOIN VOLUNTEER_SCHEDULE VOL ON VOL.SHIFT_ID = SHIFT.SHIFT_ID ";
+            $sql .= "WHERE START_DATETIME > GETDATE() ";
+            $sql .= "AND SHIFT.SHIFT_ID NOT IN ( ";
+            $sql .=            "SELECT SHIFT_ID FROM VOLUNTEER_SCHEDULE ";
+            $sql .=            "WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"];
+            $sql .=            ") ";
+            $sql .= "AND MALES_ONLY = ";
+            $sql .=            "(CASE WHEN ";
+            $sql .=            "(SELECT GENDER FROM VOLUNTEER WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"] .") <> 'MA' THEN 'N' ";
+            $sql .=            "ELSE MALES_ONLY END) ";
+            $sql .= "AND MINIMUM_AGE = ";
+            $sql .=            "(CASE ";
+            $sql .=            "WHEN (SELECT BIRTHDATE FROM VOLUNTEER WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"] .") > DATEADD(YEAR, -13, GETDATE()) THEN 0 ";
+            $sql .=            "WHEN (SELECT BIRTHDATE FROM VOLUNTEER WHERE VOLUNTEER_ID = ". $_SESSION["volunteerid"] .") > DATEADD(YEAR, -18, GETDATE()) THEN 13 ";
+            $sql .=            "ELSE MINIMUM_AGE END) ";
+            $sql .= "GROUP BY SHIFT.SHIFT_ID, SHIFT_DESCRIPTION, START_DATETIME, END_DATETIME, VOLUNTEER_MAXIMUM, MINIMUM_AGE, MALES_ONLY ";
+            $sql .= "HAVING COUNT(VOLUNTEER_ID) < VOLUNTEER_MAXIMUM ";
             
             
 //            echo "<pre>";
@@ -116,35 +130,42 @@ $sql .= "HAVING COUNT(VOLUNTEER_ID) < VOLUNTEER_MAXIMUM ";
                     //Volunteer_Needed
                     //Males_Only
                     //Minimum_Age
-                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["SHIFT_ID"] . '"> ';
+                    
+                    
+//                    echo '<div class="custom-control custom-checkbox"> ';
+//                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '" id="addCheck'. $row["Shift_ID"] .'">';
+//                    echo '<label class="custom-control-label" for="addCheck'. $row["Shift_ID"] .'">';
+//                    echo 'Shift: ';
+//                    echo $row["Shift_ID"] . '  Volunteer: ';
+//                    echo $row["Volunteer_ID"];
+//                    echo '</label>';
+//                    echo '</div>';
+                    
+                    
+                    echo '<div class="custom-control custom-checkbox"> ';
+                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '" id="addCheck'. $row["Shift_ID"] .'">';
+                    echo '<label class="custom-control-label" for="addCheck'. $row["Shift_ID"] .'">';
+                    
+//                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["SHIFT_ID"] . '"> ';
                     echo $row["SHIFT_DESCRIPTION"] .' at ';
                     echo $row["START_DATETIME"] .' until ';
-//                    echo $row["END_DATETIME"];
-                    //echo $row->Volunteer_Assigned . '#';
-                    //echo $row->Volunteer_Needed . '#';
-                    //echo $row->Males_Only . '#';
-                    //echo $row->Minimum_Age;
-                    echo '<br>';
+
+                    echo '</label>';
+                    echo '</div>';                    
+                 }
+                if($statement->rowCount() > 0) {
+//                    echo '<input type="submit" class="btn btn-warning" name="button_delete" value="Delete Selected Shifts">';
+                    echo '<input type="submit" class="btn btn-warning" name="button_add" value="Add Shifts">';                    
+                } else {
+                    echo '<h4>No Available Shifts.</h4>';
                 }
                 ?>
                 <br>
 
-                <input type = "submit" name = "button_add" value = "Add Shifts">
+
             </form>
 
-            <?php
-            if (null !== filter_input(INPUT_POST, 'button_add')) {//to run PHP script on submit
-                $selected_vol = $_SESSION["volunteerid"];  // Storing Selected Value In Variable
-                if (null !== filter_input(INPUT_POST, 'shift_list')) {
-                    foreach ($_POST['shift_list'] as $selected_shift) {
-                        $sql_insert = 'INSERT INTO Volunteer_Schedule (Shift_ID, Volunteer_ID) VALUES ('. $selected_shift. ',  '. $selected_vol .')';
-                        echo $sql_insert . "<br>";
-                        $stmt_insert = $connect->query($sql_insert);
-                        header("location:landing_page.php");
-                    }
-                }
-            }
-            ?>
+
 
             <form action = "landing_page.php">
                 <input type = "submit" name = "button_cancel" value = "Cancel">

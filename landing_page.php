@@ -91,7 +91,7 @@ try{
                     // ALL THE WAY TO HERE
                     echo '<div class="custom-control custom-checkbox"> ';
 //                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '"> ';
-                    echo   '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '" id="deleteCheck'. $row["Shift_ID"] .'">';
+                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '" id="deleteCheck'. $row["Shift_ID"] .'">';
                     echo '<label class="custom-control-label" for="deleteCheck'. $row["Shift_ID"] .'">';
                     echo 'Shift: ';
                     echo $row["Shift_ID"] . '  Volunteer: ';
