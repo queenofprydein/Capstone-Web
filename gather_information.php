@@ -203,7 +203,7 @@ try{
                 <input type="text" name="Emergency_Contact_Phone" class="form-control" />
                 <br>
                 <div class="form-group">
-                    <label for="Community_Service_ID">Is This For Community Service (required)</label>
+                    <label for="Community_Service_ID">Is This For Community Service? (required)</label>
                     <select class="form-control" id="Community_Service_ID" name="Community_Service" required>
                         <option value=""></option>
                         <option value="Y">Y</option>
