@@ -37,7 +37,9 @@ if (null !== filter_input(INPUT_POST, 'button_add')) {//to run PHP script on sub
     <head>
         <meta charset="UTF-8">
         <title>SM - Select Shift</title>
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> 
         <style>
             div.ex1 {
               width:500px;
@@ -52,41 +54,12 @@ if (null !== filter_input(INPUT_POST, 'button_add')) {//to run PHP script on sub
         </style>
     </head>
     <body>
-        <div class="ex2">
+        <div class="ex2" align="center">
             <img src="images/SamaritanLogohires.jpg" class="img-fluid" alt="Samaritan Ministries Logo">
             <br>
             <br>
-
-
-
-
             <form action="#" method="post">
             <?php
-            //$id = 3;
-            //$sql_volunteer = 'SELECT * FROM Volunteer';
-            //$stmt_volunteer = $connection->query($sql_volunteer);
-
-            
-//            echo '<select name="selected_volunteer">';
-//            while ($row = $stmt_volunteer->fetch()) {
-//                //Volunteer_ID
-//                //Last_Name
-//                //First_Name
-//                //Middle_Name
-//                //Phone
-//                //Email
-//                //Preferred_Method_Of_Contact
-//                //BirthDate
-//                //Gender
-//                //Emergency_Contact_Phone
-//                //Emergency_Contact_Name
-//                //Community_Service
-//                echo '<option value="' . $row->Volunteer_ID . '">' . $row->First_Name . '</option>';
-//            }
-//            echo '</select>';
-//            echo '<br>';
-            
-            
             $sql = "SELECT SHIFT.Shift_ID, SHIFT_DESCRIPTION, START_DATETIME, END_DATETIME, MINIMUM_AGE, MALES_ONLY ";
             $sql .= "FROM SHIFT ";
             $sql .= "LEFT JOIN VOLUNTEER_SCHEDULE VOL ON VOL.SHIFT_ID = SHIFT.SHIFT_ID ";
@@ -107,46 +80,12 @@ if (null !== filter_input(INPUT_POST, 'button_add')) {//to run PHP script on sub
             $sql .= "GROUP BY SHIFT.SHIFT_ID, SHIFT_DESCRIPTION, START_DATETIME, END_DATETIME, VOLUNTEER_MAXIMUM, MINIMUM_AGE, MALES_ONLY ";
             $sql .= "HAVING COUNT(VOLUNTEER_ID) < VOLUNTEER_MAXIMUM ";
             
-            
-//            echo "<pre>";
-//            var_dump($sql);
-//            echo "</pre>";
             $statement = $connect->query($sql);
-                //$sql = 'SELECT * FROM Shift';
-            //    $stmt = $connection->query($sql);
-            
-            //$result = $statement->fetch();
-                
-//            echo "<pre>";
-//            var_dump($result);
-//            echo "</pre>";
-                
                 while ($row = $statement->fetch()) {
-                    //Shift_ID
-                    //Shift_Number
-                    //Start_DateTime
-                    //End_DateTime
-                    //Volunteer_Assigned
-                    //Volunteer_Needed
-                    //Males_Only
-                    //Minimum_Age
-                    
-                    
-//                    echo '<div class="custom-control custom-checkbox"> ';
-//                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '" id="addCheck'. $row["Shift_ID"] .'">';
-//                    echo '<label class="custom-control-label" for="addCheck'. $row["Shift_ID"] .'">';
-//                    echo 'Shift: ';
-//                    echo $row["Shift_ID"] . '  Volunteer: ';
-//                    echo $row["Volunteer_ID"];
-//                    echo '</label>';
-//                    echo '</div>';
-                    
-                    
                     echo '<div class="custom-control custom-checkbox"> ';
                     echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '" id="addCheck'. $row["Shift_ID"] .'">';
                     echo '<label class="custom-control-label" for="addCheck'. $row["Shift_ID"] .'">';
                     
-//                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["SHIFT_ID"] . '"> ';
                     echo $row["SHIFT_DESCRIPTION"] .' at ';
                     echo $row["START_DATETIME"] .' until ';
 
@@ -155,20 +94,15 @@ if (null !== filter_input(INPUT_POST, 'button_add')) {//to run PHP script on sub
                  }
                 if($statement->rowCount() > 0) {
 //                    echo '<input type="submit" class="btn btn-warning" name="button_delete" value="Delete Selected Shifts">';
-                    echo '<input type="submit" class="btn btn-warning" name="button_add" value="Add Shifts">';                    
+                    echo '<input type="submit" class="btn btn-info" name="button_add" value="Add Shifts">';                    
                 } else {
                     echo '<h4>No Available Shifts.</h4>';
                 }
                 ?>
                 <br>
-
-
             </form>
-
-
-
             <form action = "landing_page.php">
-                <input type = "submit" name = "button_cancel" value = "Cancel">
+                <input type = "submit" class="btn btn-warning" name = "button_cancel" value = "Cancel">
             </form>
         </div>
     </body>
