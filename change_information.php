@@ -9,8 +9,6 @@ Copyright (C) 2019
 Created for the FTCC course CSC-289-900-2019SP.
 This program can be freely copied and/or distributed.
 -->
-
-
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -98,7 +96,22 @@ This program can be freely copied and/or distributed.
             
             echo 'Emergency contact phone number:<input type="text" name="contact_phone" class="form-control" value=' . $result["Emergency_Contact_Phone"] . '><br>';
             echo 'Emergency contact name:<input type="text" name="contact_name" class="form-control" value=' . $result["Emergency_Contact_Name"] . '><br>';
-            echo 'Community service (y/n):<input type="text" name="community_service" required class="form-control" value=' . $result["Community_Service"] . '><br>';
+            
+                echo '<div class="form-group">';
+                    echo '<label for="community_ID">Is This For Community Service? (required)</label>';
+                    echo '<select class="form-control" id="community_ID" name="community_service" required>';
+                        echo '<option ';
+                        if ($result["Preferred_Method_Of_Contact"] == 'Y'){
+                            echo 'selected="selected" ';
+                        }
+                        echo 'value="Y">Y</option>';
+                        echo '<option ';
+                        if ($result["Preferred_Method_Of_Contact"] == 'N'){
+                            echo 'selected="selected" ';
+                        }
+                        echo 'value="N">N</option>';
+                    echo '</select>';
+                echo '</div>';
             ?>
             <br>
 
@@ -113,7 +126,6 @@ This program can be freely copied and/or distributed.
     </div>
         <?php
         
-        // THIS SHOULD BE THE LOGIC FOR THE SAVE CHANGES BUTTON
         try{
             $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             if(isset($_POST['save_changes'])){
@@ -132,20 +144,7 @@ This program can be freely copied and/or distributed.
                 $sql .= "Community_Service= :input_Community_Service ";
                 $sql .= "WHERE Login_Name= '". $_SESSION["username"] ."'";
 
-                
-                echo "<br><pre>";
-                print_r($sql);
-                echo "</pre></br>";
-        
-        
-                //"SELECT Login_Name FROM Volunteer_Login WHERE Login_Name = :username";
-
                 $statement = $connect->prepare($sql);
-                //$statement->execute(['username' => $_POST["username"], 'password' => $_POST["password"]]);
-
-
-                //$statement->execute(['username' => $_POST["username"]]);
-
         
                 $statement->execute([
                 'input_Last_Name' => $_POST["last_name"], 
@@ -160,18 +159,8 @@ This program can be freely copied and/or distributed.
                 'input_Emergency_Contact_Name' => $_POST["contact_name"], 
                 'input_Community_Service' => $_POST["community_service"]
                 ]);
-
-                // IS THIS FETCH LINE REALLY NEEDED?
-                //$result = $statement->fetch();
-                //$result = $statement->fetch();
-                //SQL Query
-                //$results = $connect->query($sql);
-                //End Query
-
-                $message = '<label>'. $sql .'</label>';
                 
-//                header("location:landing_page.php");
-                echo "BACK TO HOME PAGE";
+                header("location:landing_page.php");
 
             }
     
