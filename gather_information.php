@@ -168,7 +168,7 @@ try{
                 <div class="form-group">
                     <label for="Method_Of_Contact_ID">Preferred Method Of Contact (required)</label>
                     <select class="form-control" id="Method_Of_Contact_ID" name="Preferred_Method_Of_Contact" required>
-                        <option value="">None</option>
+                        <option value=""></option>
                         <?php
                         $sql = "SELECT * FROM Preferred_Method_Of_Contact";
                         $statement = $connect->query($sql);
@@ -185,7 +185,7 @@ try{
                 <div class="form-group">
                     <label for="Gender_ID">Gender (required)</label>
                     <select class="form-control" id="Gender_ID" name="Gender" required>
-                        <option value="">None</option>
+                        <option value=""></option>
                         <?php
                         $sql_gender = "SELECT * FROM Gender";
                         $statement_gender = $connect->query($sql_gender);
@@ -205,7 +205,7 @@ try{
                 <div class="form-group">
                     <label for="Community_Service_ID">Is This For Community Service (required)</label>
                     <select class="form-control" id="Community_Service_ID" name="Community_Service" required>
-                        <option value="">None</option>
+                        <option value=""></option>
                         <option value="Y">Y</option>
                         <option value="N">N</option>
                     </select>
