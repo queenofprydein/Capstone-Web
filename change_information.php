@@ -15,6 +15,9 @@ This program can be freely copied and/or distributed.
     <head>
         <meta charset="UTF-8">
         <title>SM - Change Information</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <style>
             div.ex1 {
               width:500px;
@@ -54,18 +57,48 @@ This program can be freely copied and/or distributed.
 
             echo "<h2>Change Whatever is Wrong.<br></h2>";
             echo 'Volunteer ID: ' . $result["Volunteer_ID"] . '<br>';
-            echo '<label>Last Name</label>';
-            echo '<input type="text" name="last_name" required value="' . $result["Last_Name"] . '"><br>';
-            echo 'First Name:<input type="text" name="first_name" required value=' . $result["First_Name"] . '><br>';
-            echo 'Middle Name:<input type="text" name="middle_name" value=' . $result["Middle_Name"] . '><br>';
-            echo 'Phone:<input type="text" name="phone_number" value=' . $result["Phone"] . '><br>';
-            echo 'E-Mail:<input type="text" name="user_email" required value=' . $result["Email"] . '><br>';
-            echo 'Preferred Method of contact:<input type="text" name="contact_method" value=' . $result["Preferred_Method_Of_Contact"] . '><br>';
-            echo 'Birth date:<input type="text" name="birth_date" required value=' . $result["BirthDate"] . '><br>';
-            echo 'Gender:<input type="text" name="gender" required value=' . $result["Gender"] . '><br>';
-            echo 'Emergency contact phone number:<input type="text" name="contact_phone" value=' . $result["Emergency_Contact_Phone"] . '><br>';
-            echo 'Emergency contact name:<input type="text" name="contact_name" value=' . $result["Emergency_Contact_Name"] . '><br>';
-            echo 'Community service (y/n):<input type="text" name="community_service" required value=' . $result["Community_Service"] . '><br>';
+            echo '<label>Last Name (required)</label>';
+            echo '<input type="text" name="last_name" required class="form-control" value="' . $result["Last_Name"] . '"><br>';
+            echo 'First Name:<input type="text" name="first_name" required class="form-control" value=' . $result["First_Name"] . '><br>';
+            echo 'Middle Name:<input type="text" name="middle_name" class="form-control" value=' . $result["Middle_Name"] . '><br>';
+            echo 'Phone:<input type="text" name="phone_number" class="form-control" value=' . $result["Phone"] . '><br>';
+            echo 'E-Mail:<input type="text" name="user_email" required class="form-control" value=' . $result["Email"] . '><br>';
+
+                echo '<div class="form-group">';
+                    echo '<label for="method_ID">Preferred Method of contact (required)</label>';
+                    echo '<select class="form-control" id="method_ID" name="contact_method" required>';
+                        $sql_method = "SELECT * FROM Preferred_Method_Of_Contact";
+                        $statement_method = $connect->query($sql_method);
+                        while ($row = $statement_method->fetch()) {
+                            echo '<option ';
+                            if ($row["Method_Name"] == $result["Preferred_Method_Of_Contact"]){
+                                echo 'selected="selected" ';
+                            }
+                            echo 'value="'. $row["Method_Name"] .'">'. $row["Method_Description"] .'</option>';
+                        } 
+                    echo '</select>';
+                echo '</div>';
+
+            echo 'Birth date:<input type="text" name="birth_date" required class="form-control" value=' . $result["BirthDate"] . '><br>';
+            
+            echo '<div class="form-group">';
+                echo '<label for="Gender_ID">Gender (required)</label>';
+                echo '<select class="form-control" id="Gender_ID" name="gender" required>';
+                    $sql_gender = "SELECT * FROM Gender";
+                    $statement_gender = $connect->query($sql_gender);
+                    while ($row = $statement_gender->fetch()) {
+                        echo '<option ';
+                        if ($row["Gender"] == $result["Gender"]){
+                            echo 'selected="selected" ';
+                        }
+                        echo 'value="'. $row["Gender"] .'">'. $row["Gender_Description"] .'</option>';
+                    } 
+                echo '</select>';
+            echo '</div>';
+            
+            echo 'Emergency contact phone number:<input type="text" name="contact_phone" class="form-control" value=' . $result["Emergency_Contact_Phone"] . '><br>';
+            echo 'Emergency contact name:<input type="text" name="contact_name" class="form-control" value=' . $result["Emergency_Contact_Name"] . '><br>';
+            echo 'Community service (y/n):<input type="text" name="community_service" required class="form-control" value=' . $result["Community_Service"] . '><br>';
             ?>
             <br>
 
@@ -82,82 +115,77 @@ This program can be freely copied and/or distributed.
         
         // THIS SHOULD BE THE LOGIC FOR THE SAVE CHANGES BUTTON
         try{
-    $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    if(isset($_POST['save_changes'])){
-        $sql =  "INSERT INTO Volunteer (";
-        $sql .= "Last_Name, ";
-        $sql .= "First_Name, ";
-        $sql .= "Middle_Name, ";
-        $sql .= "Phone, ";
-        $sql .= "Email, ";
-        $sql .= "Preferred_Method_Of_Contact, ";
-        $sql .= "BirthDate, ";
-        $sql .= "Gender, ";
-        $sql .= "Emergency_Contact_Phone, ";
-        $sql .= "Emergency_Contact_Name, ";
-        $sql .= "Community_Service, ";
-        $sql .= "Login_Name";
-        $sql .= ") VALUES (";
-        $sql .= ":input_Last_Name, ";
-        $sql .= ":input_First_Name, ";
-        $sql .= ":input_Middle_Name, ";
-        $sql .= ":input_Phone, ";
-        $sql .= ":input_Email, ";
-        $sql .= ":input_Preferred_Method_Of_Contact, ";
-        $sql .= ":input_BirthDate, ";
-        $sql .= ":input_Gender, ";
-        $sql .= ":input_Emergency_Contact_Phone, ";
-        $sql .= ":input_Emergency_Contact_Name, ";
-        $sql .= ":input_Community_Service, ";
-        $sql .= ":input_Login_Name ";        
-        $sql .= ")";
-        
-        "SELECT Login_Name FROM Volunteer_Login WHERE Login_Name = :username";
-        
-        $statement = $connect->prepare($sql);
-        //$statement->execute(['username' => $_POST["username"], 'password' => $_POST["password"]]);
+            $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            if(isset($_POST['save_changes'])){
+                $sql =  "UPDATE Volunteer ";
+                $sql .= "SET ";
+                $sql .= "Last_Name= :input_Last_Name, ";
+                $sql .= "First_Name= :input_First_Name, ";
+                $sql .= "Middle_Name= :input_Middle_Name, ";
+                $sql .= "Phone= :input_Phone, ";
+                $sql .= "Email= :input_Email, ";
+                $sql .= "Preferred_Method_Of_Contact= :input_Preferred_Method_Of_Contact, ";
+                $sql .= "BirthDate= :input_BirthDate, ";
+                $sql .= "Gender= :input_Gender, ";
+                $sql .= "Emergency_Contact_Phone= :input_Emergency_Contact_Phone, ";
+                $sql .= "Emergency_Contact_Name= :input_Emergency_Contact_Name, ";
+                $sql .= "Community_Service= :input_Community_Service ";
+                $sql .= "WHERE Login_Name= '". $_SESSION["username"] ."'";
 
-
-        //$statement->execute(['username' => $_POST["username"]]);
+                
+                echo "<br><pre>";
+                print_r($sql);
+                echo "</pre></br>";
         
         
-$statement->execute([
-'input_Last_Name' => $_POST["last_name"], 
-'input_First_Name' => $_POST["first_name"], 
-'input_Middle_Name' => $_POST["middle_name"], 
-'input_Phone' => $_POST["phone_number"], 
-'input_Email' => $_POST["user_email"], 
-'input_Preferred_Method_Of_Contact' => $_POST["contact_method"], 
-'input_BirthDate' => $_POST["birth_date"], 
-'input_Gender' => $_POST["gender"], 
-'input_Emergency_Contact_Phone' => $_POST["contact_phone"], 
-'input_Emergency_Contact_Name' => $_POST["contact_name"], 
-'input_Community_Service' => $_POST["community_service"], 
-'input_Login_Name' => $_SESSION["username"] 
-]);
+                //"SELECT Login_Name FROM Volunteer_Login WHERE Login_Name = :username";
 
-// IS THIS FETCH LINE REALLY NEEDED?
-        //$result = $statement->fetch();
-        //$result = $statement->fetch();
-        //SQL Query
-        //$results = $connect->query($sql);
-        //End Query
+                $statement = $connect->prepare($sql);
+                //$statement->execute(['username' => $_POST["username"], 'password' => $_POST["password"]]);
 
-        $message = '<label>'. $sql .'</label>';
 
-    }
+                //$statement->execute(['username' => $_POST["username"]]);
+
+        
+                $statement->execute([
+                'input_Last_Name' => $_POST["last_name"], 
+                'input_First_Name' => $_POST["first_name"], 
+                'input_Middle_Name' => $_POST["middle_name"], 
+                'input_Phone' => $_POST["phone_number"], 
+                'input_Email' => $_POST["user_email"], 
+                'input_Preferred_Method_Of_Contact' => $_POST["contact_method"], 
+                'input_BirthDate' => $_POST["birth_date"], 
+                'input_Gender' => $_POST["gender"], 
+                'input_Emergency_Contact_Phone' => $_POST["contact_phone"], 
+                'input_Emergency_Contact_Name' => $_POST["contact_name"], 
+                'input_Community_Service' => $_POST["community_service"]
+                ]);
+
+                // IS THIS FETCH LINE REALLY NEEDED?
+                //$result = $statement->fetch();
+                //$result = $statement->fetch();
+                //SQL Query
+                //$results = $connect->query($sql);
+                //End Query
+
+                $message = '<label>'. $sql .'</label>';
+                
+//                header("location:landing_page.php");
+                echo "BACK TO HOME PAGE";
+
+            }
     
-} catch (PDOException $error) {
-    $message = $error->getMessage();
-}
+        } catch (PDOException $error) {
+            $message = $error->getMessage();
+        }
 
 
         ?>
         
-    <?php
-    if (isset($message)) {
-        echo '<label class="text-danger">' . $message . '</label>';
-    }
-    ?>
+        <?php
+        if (isset($message)) {
+            echo '<label class="text-danger">' . $message . '</label>';
+        }
+        ?>
 </body>
 </html>
