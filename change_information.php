@@ -131,8 +131,13 @@ This program can be freely copied and/or distributed.
                     echo '</select>';
                 echo '</div>';
 
-                echo 'Birth Date [mm/dd/yyyy] (required)<input type="text" name="birth_date" required class="form-control" value=' . $result["BirthDate"] . '><br>';
-
+//                echo 'Birth Date [mm/dd/yyyy] (required)<input type="text" name="birth_date" required class="form-control" value=' . $result["BirthDate"] . '><br>';
+                echo 'Birth Date [mm/dd/yyyy] (required)<input type="text" name="birth_date" required class="form-control" value="';
+                $birthtdate=date_create($result["BirthDate"]);
+                echo date_format($birthtdate,"m/d/Y");
+                echo '"><br>';
+                
+                
                 echo '<div class="form-group">';
                     echo '<label for="Gender_ID">Gender (required)</label>';
                     echo '<select class="form-control" id="Gender_ID" name="gender" required>';
