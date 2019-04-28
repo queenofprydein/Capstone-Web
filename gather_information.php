@@ -28,15 +28,14 @@ try{
 //    if(isset($_POST['add_data'])){
         $date = DateTime::createFromFormat('m/d/Y', $_POST["BirthDate"]);
         $date_errors = DateTime::getLastErrors();
-        if (preg_match("/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/", $_POST["Phone"])){
-            $message = '<label>Invalid phone number entered. Use format ###-###-####</label>';
+        if ($date_errors['warning_count'] + $date_errors['error_count'] > 0){
+            $message = '<label>Invalid date format. Please use mm/dd/yyyy format.</label>';
         } elseif (!filter_var($_POST["Email"], FILTER_VALIDATE_EMAIL)){
             $message = '<label>Invalid E-Mail address entered.</label>';
-        } elseif ($date_errors['warning_count'] + $date_errors['error_count'] > 0) {
-            $message = '<label>Invalid date format. Please use mm/dd/yyyy format.</label>';
-        } elseif (preg_match("/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/", $_POST["Emergency_Contact_Phone"])){
-            $message = '<label>Invalid phone number entered for emergency contact. Use format ###-###-####'
-                    . '</label>';
+        } elseif (!preg_match("/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]|^$/", $_POST["Phone"])) {
+            $message = '<label>Invalid phone number entered. Use format ##########</label>';
+        } elseif (!preg_match("/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]|^$/", $_POST["Emergency_Contact_Phone"])){
+            $message = '<label>Invalid phone number entered for emergency contact. Use format ##########</label>';
         } else {
             $sql =  "INSERT INTO Volunteer (";
             $sql .= "Last_Name, ";
@@ -84,38 +83,12 @@ try{
             'input_Community_Service' => $_POST["Community_Service"], 
             'input_Login_Name' => $_SESSION["username"] 
             ]);
-
-            // IS THIS FETCH LINE REALLY NEEDED?
-//            $result = $statement->fetch();
-
-            $message = '<label>'. $sql .'</label>';
             header("location:landing_page.php");
         }
     }
 } catch (PDOException $error) {
     $message = $error->getMessage();
 }
-
-
-
-
-//$db = connection();
-
-//SQL Query
-//$results = $db->query($sql);
-//End Query
-
-//echo "<pre>";
-//var_dump($results);
-//echo "</pre>";
-        
-//        foreach($results as $row){
-//            echo $row['Last_Name'].', '.$row['First_Name'].'<br>';
-//        }
-
-//Login_Name = "";
-//Volunteer_ID = "SELECT statement FROM Volunteer";
-//Password_Hash = "";
 ?>
 <html>
     <head>
@@ -159,7 +132,7 @@ try{
                 <label>Middle Name</label>
                 <input type="text" name="Middle_Name" class="form-control" />
                 <br>
-                <label>Phone [###-###-####]</label>
+                <label>Phone [##########]</label>
                 <input type="text" name="Phone" class="form-control" />
                 <br>
                 <label>E-Mail (required)</label>
@@ -199,7 +172,7 @@ try{
                 <label>Emergency Contact Name</label>
                 <input type="text" name="Emergency_Contact_Name" class="form-control" />
                 <br>
-                <label>Emergency Contact Phone Number [###-###-####]</label>
+                <label>Emergency Contact Phone Number [##########]</label>
                 <input type="text" name="Emergency_Contact_Phone" class="form-control" />
                 <br>
                 <div class="form-group">
