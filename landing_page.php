@@ -77,40 +77,22 @@ try{
             <form action="#" method="post">
                 <h1>Current Scheduled Shifts</h1>
                 <?php
-                //$sql = 'SELECT * FROM Volunteer_Schedule WHERE Volunteer_ID ='. $_SESSION["volunteerid"];
-                
                 $sql =  'SELECT Shift.Shift_ID, Shift_Description, Start_DateTime, End_DateTime ';
                 $sql .= 'FROM Shift ';
                 $sql .= 'LEFT JOIN Volunteer_Schedule ON Volunteer_Schedule.Shift_ID = Shift.Shift_ID ';
                 $sql .= 'WHERE ';
                 $sql .= 'START_DATETIME > GETDATE() AND Volunteer_ID = '. $_SESSION["volunteerid"];
-                
-                
+
                 $stmt = $connect->query($sql);
                 while ($row = $stmt->fetch()) {
-                    // THIS STUFF NEEDS TO BE ENTERED BELOW
-    //                    <div class="custom-control custom-checkbox">  
-    //                        <input type="checkbox" class="custom-control-input" id="customCheck3">
-    //                        <label class="custom-control-label" for="customCheck3">Check this custom checkbox</label>
-    //                    </div>
-                    // ALL THE WAY TO HERE
                     echo '<div class="custom-control custom-checkbox"> ';
-//                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '"> ';
                     echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '" id="deleteCheck'. $row["Shift_ID"] .'">';
                     echo '<label class="custom-control-label" for="deleteCheck'. $row["Shift_ID"] .'">';
-                    echo 'Name: ';
-                    echo $row["Shift_Description"] . '  Time: ';
-                    echo $row["Start_DateTime"];
+                    echo $row["Shift_Description"] . '  @ ';
+                    $startdate=date_create($row["Start_DateTime"]);
+                    echo date_format($startdate,"D d M Y g:i A");
                     echo '</label>';
                     echo '</div>';
-                    
-//                    OLD STUFF
-//                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '"> ';
-//                    echo 'Shift: ';
-//                    echo $row["Shift_ID"] . '  Volunteer: ';
-//                    echo $row["Volunteer_ID"];
-//                    echo '<br>';
-                    
                 }
                 if($stmt->rowCount() > 0) {
                     echo '<input type="submit" class="btn btn-warning" name="button_delete" value="Delete Selected Shifts">';
@@ -119,34 +101,12 @@ try{
                 }
                 ?>
             </form>
+
             <?php
             if (isset($message)) {
                 echo '<label class="text-danger">' . $message . '</label>';
             }
             ?>
-            
-            
-            
-             <?php
-
-//            if (null !== filter_input(INPUT_POST, 'button_delete')) {
-//                $selected_vol = $_SESSION["volunteerid"];
-//                if (null !== filter_input(INPUT_POST, 'shift_list')) {
-//                    foreach ($_POST['shift_list'] as $selected_shift) {
-//                      //$sql_insert = 'INSERT INTO Volunteer_Schedule (Shift_ID, Volunteer_ID) VALUES ('. $selected_shift. ',  '. $selected_vol .')';
-//                        $sql_delete = "DELETE FROM Volunteer_Schedule WHERE Shift_ID = ". $selected_shift ." AND Volunteer_ID =". $_SESSION["volunteerid"];
-//                                   // "DELETE FROM Volunteer_Schedule WHERE Shift_ID = ". $selected_shift ." AND Volunteer_ID =". $_SESSION["volunteerid"];
-//
-//
-//                        echo $sql_delete . "<br>";
-//                        $stmt_insert = $connect->query($sql_delete);
-//                        //header("Refresh:0");
-//                        header("location:landing_page.php");
-//                    }
-//                }
-//            }
-            ?>
-
             <br>
             <form action="add_shift.php">
                 <input type="submit" class="btn btn-success" name="button_add_shifts" value="Add Shifts">
