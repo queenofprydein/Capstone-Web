@@ -77,7 +77,15 @@ try{
             <form action="#" method="post">
                 <h1>Current Scheduled Shifts</h1>
                 <?php
-                $sql = 'SELECT * FROM Volunteer_Schedule WHERE Volunteer_ID ='. $_SESSION["volunteerid"];
+                //$sql = 'SELECT * FROM Volunteer_Schedule WHERE Volunteer_ID ='. $_SESSION["volunteerid"];
+                
+                $sql =  'SELECT Shift.Shift_ID, Shift_Description, Start_DateTime, End_DateTime ';
+                $sql .= 'FROM Shift ';
+                $sql .= 'LEFT JOIN Volunteer_Schedule ON Volunteer_Schedule.Shift_ID = Shift.Shift_ID ';
+                $sql .= 'WHERE ';
+                $sql .= 'START_DATETIME > GETDATE() AND Volunteer_ID = '. $_SESSION["volunteerid"];
+                
+                
                 $stmt = $connect->query($sql);
                 while ($row = $stmt->fetch()) {
                     // THIS STUFF NEEDS TO BE ENTERED BELOW
@@ -90,9 +98,9 @@ try{
 //                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '"> ';
                     echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '" id="deleteCheck'. $row["Shift_ID"] .'">';
                     echo '<label class="custom-control-label" for="deleteCheck'. $row["Shift_ID"] .'">';
-                    echo 'Shift: ';
-                    echo $row["Shift_ID"] . '  Volunteer: ';
-                    echo $row["Volunteer_ID"];
+                    echo 'Name: ';
+                    echo $row["Shift_Description"] . '  Time: ';
+                    echo $row["Start_DateTime"];
                     echo '</label>';
                     echo '</div>';
                     
