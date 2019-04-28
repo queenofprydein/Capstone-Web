@@ -38,11 +38,7 @@ try{
         $selected_vol = $_SESSION["volunteerid"];
         if (null !== filter_input(INPUT_POST, 'shift_list')) {
             foreach ($_POST['shift_list'] as $selected_shift) {
-              //$sql_insert = 'INSERT INTO Volunteer_Schedule (Shift_ID, Volunteer_ID) VALUES ('. $selected_shift. ',  '. $selected_vol .')';
                 $sql_delete = "DELETE FROM Volunteer_Schedule WHERE Shift_ID = ". $selected_shift ." AND Volunteer_ID =". $_SESSION["volunteerid"];
-                           // "DELETE FROM Volunteer_Schedule WHERE Shift_ID = ". $selected_shift ." AND Volunteer_ID =". $_SESSION["volunteerid"];
-
-
                 echo $sql_delete . "<br>";
                 $stmt_insert = $connect->query($sql_delete);
                 header("location:landing_page.php");
@@ -79,6 +75,7 @@ try{
             <br>
             <br>
             <form action="#" method="post">
+                <h1>Current Scheduled Shifts</h1>
                 <?php
                 $sql = 'SELECT * FROM Volunteer_Schedule WHERE Volunteer_ID ='. $_SESSION["volunteerid"];
                 $stmt = $connect->query($sql);
@@ -143,13 +140,12 @@ try{
             ?>
 
             <br>
-
-            <form action="change_information.php">
-                <input type="submit" class="btn btn-info" name="button_change_info" value="Change Personal Information">
+            <form action="add_shift.php">
+                <input type="submit" class="btn btn-success" name="button_add_shifts" value="Add Shifts">
             </form>
             <br>
-            <form action="add_shift.php">
-                <input type="submit" class="btn btn-info" name="button_add_shifts" value="Add Shifts">
+            <form action="change_information.php">
+                <input type="submit" class="btn btn-info" name="button_change_info" value="Change Personal Information">
             </form>
             <br>
             <form action="logout.php">

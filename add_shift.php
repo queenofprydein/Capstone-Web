@@ -81,26 +81,27 @@ if (null !== filter_input(INPUT_POST, 'button_add')) {//to run PHP script on sub
             $sql .= "HAVING COUNT(VOLUNTEER_ID) < VOLUNTEER_MAXIMUM ";
             
             $statement = $connect->query($sql);
-                while ($row = $statement->fetch()) {
-                    echo '<div class="custom-control custom-checkbox"> ';
-                    echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '" id="addCheck'. $row["Shift_ID"] .'">';
-                    echo '<label class="custom-control-label" for="addCheck'. $row["Shift_ID"] .'">';
-                    
-                    echo $row["SHIFT_DESCRIPTION"] .' at ';
-                    echo $row["START_DATETIME"] .' until ';
+            while ($row = $statement->fetch()) {
+                echo '<div class="custom-control custom-checkbox"> ';
+                echo '<input type="checkbox" class="custom-control-input" name="shift_list[]" value="' . $row["Shift_ID"] . '" id="addCheck'. $row["Shift_ID"] .'">';
+                echo '<label class="custom-control-label" for="addCheck'. $row["Shift_ID"] .'">';
 
-                    echo '</label>';
-                    echo '</div>';                    
-                 }
-                if($statement->rowCount() > 0) {
+                echo $row["SHIFT_DESCRIPTION"] .' @ ';
+                $startdate=date_create($row["START_DATETIME"]);
+                echo date_format($startdate,"D d M Y g:i A");
+                
+                echo '</label>';
+                echo '</div>';                    
+            }
+            if($statement->rowCount() > 0) {
 //                    echo '<input type="submit" class="btn btn-warning" name="button_delete" value="Delete Selected Shifts">';
-                    echo '<input type="submit" class="btn btn-info" name="button_add" value="Add Shifts">';                    
-                } else {
-                    echo '<h4>No Available Shifts.</h4>';
-                }
-                ?>
-                <br>
+                echo '<input type="submit" class="btn btn-success" name="button_add" value="Add Shifts">';                    
+            } else {
+                echo '<h4>No Available Shifts.</h4>';
+            }
+            ?>
             </form>
+            <br>
             <form action = "landing_page.php">
                 <input type = "submit" class="btn btn-warning" name = "button_cancel" value = "Cancel">
             </form>
